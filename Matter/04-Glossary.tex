@@ -1,0 +1,25 @@
+% Place here all the terms that need definition within your document.
+\newglossaryentry{metaheuristic}
+{
+    name=metaheuristic,
+    description={(or meta-heuristic) A high-level, problem-independent algorithmic framework designed to guide underlying heuristic in efficiently exploring large search spaces for near-optimal solutions. Metaheuristics are typically applied to complex optimization problems where traditional exact methods are computationally infeasible. They combine stochastic components, iterative refinement, and strategic exploration and exploitation of the search space}
+}
+
+\newglossaryentry{search-space}
+{
+    name=search space,
+    description={The admissable set of all possible solutions to a given problem. Each point in the search space represents a candidate solution, and the goal of an optimization algorithm is to explore this space to find the solution (or solutions) that optimize a given objective function. The structure and dimensionality of the search space depend on the problem's variables and constraints---it can be continuous, discrete, or a combination of both. When solving an $n$-dimensional single-objective, optimization problem defined in $\mathbb{R}^{n}$, the admissible set of solutions typically takes the form of an $n$-dimensional hypercube}
+}
+
+\newglossaryentry{optimization-problem}
+{
+    name=optimization problem,
+    description={A mathematical or formally expressed problem in which the objective is to find the best solution from a set of feasible solutions, according to a specified criterion. Formally, it involves minimizing or maximizing an objective function $f(x)$, subject to a set of constraints that define the feasible region within the search space. The general form of an optimization problem can be expressed as:%
+$$
+\begin{aligned}
+\text{Minimize (or Maximize)} \quad & f(x) \\
+\text{Subject to} \quad & x \in \mathcal{D}
+\end{aligned}
+$$
+where $x$ is a vector of decision variables, $f(x)$ is the objective function to be optimized, and $\mathcal{D}$ represents the domain of feasible solutions, which may include equality and inequality constraints}
+}
