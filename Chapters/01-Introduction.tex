@@ -29,18 +29,23 @@ In referencing early influences on their work, Kennedy and Eberhart point to the
 graceful and erratic choreography of a bird flock,
 % flocking behavior,
 and Heppner, a zoologist interested in the biological mechanisms behind coordinated group movement, both explored how large numbers of birds could maneuver synchronously---suddenly shifting direction, dispersing, and regrouping with apparent ease. These researchers shared a key insight: that such complex and seemingly unpredictable collective behavior could emerge from simple, local processes,
-% and primitive rules,
+and primitive rules,
 such as those modeled using systems like cellular automata.
 % , provided a conceptual foundation for understanding how decentralized, self-organizing systems might be applied in computational models---an idea central to the development of Particle Swarm Optimization.
 
 Beyond the aesthetic and biological insights, these simulations carried the implicit suggestion that such models could extend to more abstract domains, including human social and cognitive behavior. Drawing on observation that individuals in animal groups can benefit from shared information \parencite{wilson1975sociobiology}, \citeauthor{kennedy1995particle} proposed that similar mechanisms might underlie information exchange and adaptation in human social contexts. Unlike animals constrained by physical proximity and collision avoidance, humans operate in a multidimensional socio-cognitive space, adjusting beliefs, attitudes, and knowledge in response to peers. This abstraction allows for modeling human-like adaptation without the constraints of physical movement.
 
-Within this framework, the PSO algorithm emerged not merely as a visual simulation of flocking, but as a conceptual tool for modeling social learning and adaptation. Particles, conceived as collision-free agents, navigate an abstract solution space, adjusting their positions based on both individual experience and the shared knowledge of the group. Thus, PSO embodies a synthesis of biological modeling, social theory, and computational optimization, grounded in the principle that simple, local rules can drive complex, adaptive behavior.
-% in both natural and artificial systems.
 
-Last but not least, in their another seminal paper, \citet{eberhart1995new} highlight that, in addition to the aforementioned artificial life (e-life) methodology, \acrlong{pso} also has its roots in the field of evolutionary computation. Specifically, they note that \acrshort{pso}, on the ground of conceptual foundations, shares important similarities with \acrfull{ga} and \acrfull{es}.
+
+During the initial simplification of the original paradigm, it became obvious that the behavior of the agent population resembles rather a \textit{swarm} than a flock. The term was adopted from \citet{millonas1993swarms}, who introduced early models of swarm intelligence within the context of artificial life (e-life) and identified five foundational principles underlying swarm behavior. Notably, \acrshort{pso} adheres to all five of these principles.
+Similarly, the other part of the optimizer's name was selected as a compromise as that the entities used in the model have neither mass nor volume, and thus could be called \textit{points}. The authors decide to use this term \textit{particle}, because it had already started to be used in computer graphics to simulate scattered or fuzzy phenomena like smoke, fire, and clouds \citep{reeves1983particle}.
+
+
+Last but not least, in their another seminal paper, \citet{eberhart1995new} highlight that, in addition to the aforementioned artificial life methodology, \acrlong{pso} also has its roots in the field of evolutionary computation. Specifically, they note that \acrshort{pso}, on the ground of conceptual foundations, shares important similarities with \acrfull{ga}, \acrfull{es}, and \acrfull{ep}.
 
 While it was evident from the very beginning that both approaches are similar in their parallel processing nature and share the core principle of population-based search and stochastic exploration, early researchers quickly recognized several important distinctions. Most notably,  \acrshort{ga} and \acrshort{es} employ a ``competitive'' strategy: individuals in the population compete for survival, and poorly performing solutions are replaced by offspring generated through variation operators such as crossover and mutation. In contrast, \acrshort{pso} operates on a ``cooperative'' principle with a velocity-driven update mechanism grounded in behavioral modeling, which allows for smoother, memory-informed trajectories through the search space. A more thorough philosophical and empirical comparison between PSO and GA is provided by \citet{angeline1998evolutionary}.
+
+% Within this framework, the PSO algorithm emerged not merely as a visual simulation of flocking, but as a conceptual tool for modeling social learning and adaptation. Particles, conceived as collision-free agents, navigate an abstract solution space, adjusting their positions based on both individual experience and the shared knowledge of the group. Thus, PSO embodies a synthesis of biological modeling, social theory, and computational optimization, grounded in the principle that simple, local rules can drive complex, adaptive behavior in both natural and artificial systems.
 
 
 
@@ -57,7 +62,7 @@ While it was evident from the very beginning that both approaches are similar in
 
 In general, the \acrfull{pso} method can be described as:
 \begin{equation}\label{eq:pso}
-(P', \vec{b}_g') = m(P, \vec{b_g}, f)
+(P', \vec{b}_g') = m(P, \vec{b_g}, f),
 \end{equation}
 where \(P\) denotes a multiset---referred to as the \textit{swarm}---containing positions in the \gls{search-space}, with each element representing a solution candidate termed \textit{particle}.
 % Each particle evaluates the \textit{objective function} \(f\)  at its current location,
@@ -66,7 +71,7 @@ The function \(f\) is the \textit{objective function} that particles evaluate at
 The vector \(\vec{b_g}\) denotes the best solution found by the swarm so far, that is, the position corresponding to the lowest (or highest, depending on the optimization goal) value of the objective function \(f\).
 In a \(d\)-dimensional \gls{search-space} \(\vec{b_g} = (b_{g}^{1}, b_{g}^{2}, \dots, b_{g}^{d}) \).
 The function \(m\)~is a stochastic operator that governs how the swarm evolves, i.e., how particles move within the search space, defined by the equations~\eqref{eq:velocity_update}--\eqref{eq:gbest_update} below.
-
+%
 In line with common practice and terminology borrowed from the field of evolutionary computation, the terms swarm, particles, and objective function are often interchangeably referred to as population, individuals, and fitness function, respectively.
 
 % In a \(d\)-dimensional \gls{search-space},
@@ -93,22 +98,6 @@ v_{i}^{j}{}'= \underbrace{\omega v_{i}^{j}}_{\text{inertia}} +
 x_{i}^{j}{}' = x_{i}^{j} + v_{i}^{j}{}',
 \end{equation}
 where $\omega$ is the \textit{inertia} weight, \(c_1\) and \(c_2\) are acceleration coefficients (sometimes called \textit{cognitive} and \textit{social} coefficients, respectively), \(r_1\) and \(r_2\) are random values uniformly distributed in the range [0, 1], and the equations are applied to each dimension  $j \in \{ 1,\ldots,d \}$.
-
-The objective function defines a total order over the set of candidate solutions, allowing the algorithm to continuously identify and update the personal and global best positions throughout the search process. Each particle thus keeps track of its own historical best position, and is influenced by the global best position, 
-\(\vec{b_g}\), found so far by the entire swarm.
-\begin{equation}\label{eq:pbest_update}
-\vec{b}_i' =
-\begin{cases}
-\vec{x}_i', & \text{if } f(\vec{x}_i') < f(\vec{b}_i) \\
-\vec{b}_i, & \text{otherwise,}
-\end{cases}
-\end{equation}
-\begin{equation}\label{eq:gbest_update}
-\vec{b}_g' = \arg\min_{{\vec{b}_i'}\ \mid\ X_i' \in P'} f(\vec{b}_i').
-\end{equation}
-
-% The velocity equation continues the movement in the previous direction and directs a particle's movement toward both its personal best and the global best positions, encouraging convergence to an optimal solution over successive iterations.
-
 
 The velocity update equation preserves momentum from the previous direction while steering each particle toward its personal best and the global best positions, thereby promoting convergence to the best known solution over successive iterations.
 
@@ -174,20 +163,19 @@ The velocity update equation preserves momentum from the previous direction whil
     \label{fig:PSO_geometric_illustration}
 \end{figure}
 
+The objective function defines a total order over the set of candidate solutions, allowing the algorithm to continuously identify and update the personal and global best positions throughout the search process. Each particle thus keeps track of its own historical best position, and is influenced by the global best position, 
+\(\vec{b_g}\), found so far by the entire swarm.
+\begin{equation}\label{eq:pbest_update}
+\vec{b}_i' =
+\begin{cases}
+\vec{x}_i', & \text{if } f(\vec{x}_i') \leq f(\vec{b}_i) \\
+\vec{b}_i, & \text{otherwise,}
+\end{cases}
+\end{equation}
+\begin{equation}\label{eq:gbest_update}
+\vec{b}_g' = \arg\min_{{\vec{b}_i'}\ \mid\ X_i' \in P'} f(\vec{b}_i').
+\end{equation}
 
-% Naturally,
-% \begin{equation}\label{eq:pbest_update}
-% \vec{b}_i' =
-% \begin{cases}
-% \vec{x}_i', & \text{if } f(\vec{x}_i') < f(\vec{b}_i) \\
-% \vec{b}_i, & \text{otherwise,}
-% \end{cases}
-% \end{equation}
-% \begin{equation}\label{eq:gbest_update}
-% \vec{b}_g' = \arg\min_{{\vec{b}_i'}\ \mid\ X_i' \in P'} f(\vec{b}_i').
-% \end{equation}
-
-% These equations encode the core intuition behind PSO: particles are agents that "learn" from their own successes (personal experience) and from the collective experience of the swarm. The inertia term maintains momentum from previous movements, which helps the swarm explore broadly. The cognitive component pulls particles back toward regions where they individually performed well, while the social component biases them toward globally successful areas. By dynamically balancing these influences through stochastic variation, PSO achieves a trade-off between exploration and exploitation---a hallmark of effective metaheuristic design.
 
 
 The algorithm begins by initializing a population of particles, each representing a candidate solution, randomly sampled within the defined bounds of the \gls{search-space}. In parallel, initial velocity vectors are randomly assigned to each particle. The fitness of each particle is then evaluated using the objective function, allowing the assignment of each particle's personal best position. The best-performing particle among the entire swarm establishes the initial global best position.
@@ -218,7 +206,7 @@ Set global best position \(b_g\), for each particle set personal best position \
 
 \vspace{.935em}
 
-At its core, \acrshort{pso} mimics the social dynamics of a group of entities or agents---i.e., particles---that explore a solution space collectively, adjusting their paths based on individual experience and shared knowledge within the swarm. 
+At its core, \acrshort{pso} mimics the social dynamics of a group of entities---i.e., particles---that explore the admissible space of solutions by adjusting their trajectories  based on both individual experience and shared information within the swarm. In consequence, the particle swarm is more than a mere collection of independent agents---a single particle, in isolation, is not capable to solve the problem. Progress emerges only through interaction and mutual influence among particles. Thus, problem-solving is a collective phenomenon, arising from the continuous exchange of information and the responses it triggers within the population. \citep{poli2007particle}.
 
 \section{Key Components and Parameters}
 
