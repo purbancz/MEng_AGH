@@ -148,6 +148,7 @@
 \RequirePackage{emptypage}
 \RequirePackage[ruled,linesnumbered,lined]{algorithm2e}
 \RequirePackage{algpseudocode}
+\RequirePackage{pgffor}
 % \RequirePackage{indentfirst}
 \RequirePackage{tikz}
 \usetikzlibrary{arrows.meta,calc,positioning,shapes.misc}

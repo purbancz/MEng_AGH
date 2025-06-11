@@ -50,7 +50,7 @@ While it was evident from the very beginning that both approaches are similar in
 
 
 
-\section{Algorithm Principles}
+\section{Principles}
 
 
 
@@ -189,8 +189,8 @@ Upon completion, the global best position discovered by any particle during the 
 \vspace{.935em}
 
 \begin{algorithm}[H]
-% \caption{Particle Swarm Optimization (PSO)}
-\caption{PSO}
+\caption{Particle Swarm Optimization (PSO)}\label{alg:pso}
+% \caption{PSO}
 \KwIn{Swarm size \(N\), acceleration coefficients \(c_1\) and \(c_2\), inertia weight \(\omega\)}
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities\;
@@ -206,65 +206,147 @@ Set global best position \(b_g\), for each particle set personal best position \
 
 \vspace{.935em}
 
-At its core, \acrshort{pso} mimics the social dynamics of a group of entities---i.e., particles---that explore the admissible space of solutions by adjusting their trajectories  based on both individual experience and shared information within the swarm. In consequence, the particle swarm is more than a mere collection of independent agents---a single particle, in isolation, is not capable to solve the problem. Progress emerges only through interaction and mutual influence among particles. Thus, problem-solving is a collective phenomenon, arising from the continuous exchange of information and the responses it triggers within the population. \citep{poli2007particle}.
+At its core, \acrshort{pso} mimics the social dynamics of a group of entities---i.e., particles---that explore the admissible space of solutions by adjusting their trajectories  based on both individual experience and shared information within the swarm. In consequence, the particle swarm is more than a mere collection of independent agents---a single particle, in isolation, is not capable to solve the problem. Progress emerges only through interaction and mutual influence among particles. Thus, problem-solving is a collective phenomenon, arising from the continuous exchange of information and the responses it triggers within the population \citep{poli2007particle}.
+
+% \begin{figure}[!htbp]
+%   \centering
+
+%   % Manually define the frame numbers you want to include:
+%   \foreach \n in {0000,0005,0010,0015,0020,0025,0030,0035,0040,0045,0050,0055} {
+%     \begin{subfigure}{0.329\textwidth}
+%       \centering
+%       \includegraphics[width=\linewidth]{Figures/AlgorithmsAnimations/PSO/PSO_Rastrigin_with_arrows_frame_\n.png}
+%       \caption*{Frame \n}
+%     \end{subfigure}%
+%     \ifnum\n=0010 \par\fi
+%     \ifnum\n=0025 \par\fi
+%     \ifnum\n=0040 \par\fi
+%     \ifnum\n=0055 \par\fi
+%   }
+
+%   \caption{Selected frames of PSO on Rastrigin function (4×3 grid).}
+%   \label{fig:pso-raster-grid}
+% \end{figure}
+
+
 
 \section{Key Components and Parameters}
 
-- velocity components (and coefficients)
-- termination criterion
-- repair algorithm (bounce, clip, reinitialize)
-- early variants (Local Best PSO)
+\subsection{Swarm Size}
+
+The swarm size \( \lvert P\mkern1mu\rvert = N \), as denoted in the Algorithm \ref{alg:pso} above, refers to the number of particles (or solution candidates) used by the algorithm.  Intuitively, a larger number of particles increases the initial diversity of the swarm—assuming a uniform initialization scheme—and may improve the probability of discovering high-quality solutions in a fewer number of steps. However, larger swarms also raise the computational cost per iteration, since the number of objective function evaluations per step scales linearly with the swarm size. Conversely, smaller swarms reduce this cost but may suffer from premature convergence, limited exploration, or failure to reach the global optimum.
+
+While swarms in nature can number in the thousands or even millions, PSO has been proven to work surprisingly well with relatively small populations. Earlier studies claim that swarm sizes in the range of 20 to 50 particles are commonly used in practice \citep{poli2007particle}. Some authors report effective performance with even smaller swarms---10 to 30 particles---and successful applications have been documented with fewer than 10 particles under specific conditions \citep{engelbrecht2007computational, vandenbergh2002analysis}. However, more recent literature suggests that while small swarm sizes remain widely used, they are not optimal for efficiently solving complex or multimodal optimization problems. For such tasks, swarm sizes in the range of 70 to 500 particles have been found to offer better performance \citep{abualigah2025particle}.
+
+Ultimately, the optimal swarm size is problem-dependent, varying with characteristics of the objective landscape such as smoothness, modality, or dimensionality. It is commonly treated as a tunable hyperparameter, often adjusted through empirical calibration or automated tuning procedures. In the experiments presented in \autoref{cp:experiment}, the swarm size has been excluded from parameter tuning and was fixed at \( N = 100 \) for all PSO variants tested across all benchmark problems.
 
 
-\section{Possible Application}
+\subsection{Inertia}
 
-PSO offers elegant yet powerful approach to solving complex \glspl{optimization-problem}.
+Lipsum
 
-\section{Pros and Cons}
-Welcome to the \textcolor{maincolor}{\textit{IPLeiria Thesis}} template! Thank you for choosing it for your dissertation, reports, or other projects. This template reflects countless hours of development and learning, and I hope you enjoy using it as much as I enjoyed creating it. This chapter introduces the motivation behind the template and guides you through the initial steps to start using it. In \autoref{cp:user-guide}, you will find a comprehensive guide to fully utilise the template, and \autoref{cp:latex-tutorial} provides a concise \LaTeX~tutorial to help you maximise its capabilities. Happy reading and future writing!
+\subsection{Cognitive Component}
 
-%%%%%%%%%%%%%%%%%%%%%
-I've known \LaTeX~since 2020, and since then, I have been using it constantly for a wide variety of purposes. Over time, I've used and reviewed more than a hundred templates, and there is always something missing. \textit{Always}. If a template is powerful -- \textit{i.e.}, it has many options and is highly customisable -- it's often not well-organised. Conversely, if it is well-organised, it usually lacks flexibility and customisation options. Some templates even compile with numerous errors and warnings. Most importantly, the majority are not very user-friendly. For these reasons, I decided to create my own template for theses and reports, specifically tailored for the Polytechnic University of Leiria. Throughout this project, I focused on achieving four key goals: \(i)\) creating a template that is organised and well-structured in terms of file organisation, \(ii)\) ensuring it is clean yet aesthetically pleasing and professional, \(iii)\) making it customisable to suit different needs, and \(iv)\) designing it to be user-friendly, especially for newcomers.
+Lipsum
 
-\section{Getting Started}
-To start using this template, you first need to know how to use \LaTeX. For this, please refer to \autoref{cp:latex-tutorial}. Once you are familiar with \LaTeX, you will need to either install it locally or use an online \LaTeX~editor.
+\subsection{Social Component}
 
-If you prefer an online editor, I highly recommend \href{https://www.overleaf.com/}{Overleaf}. While Overleaf offers a paid subscription for extended compilation time, this template is specifically designed to compile within the limits of the free subscription plan. To use the template in Overleaf, just refer to \href{https://www.overleaf.com/latex/templates/unofficial-polytechnic-university-of-leiria-estg-thesis-slash-report-template/tqgbrncfhwgt}{official template page} and click \textit{Use as Template}. But if you prefer to use a different version of it (which I do not recommend), you can do the following:
+Lipsum
 
-\begin{enumerate}[font=\itshape]
-    \setlength{\itemsep}{.375em}
-    \item \textit{Download the \href{https://github.com/joseareia/ipleiria-thesis/releases}{desired version} from the GitHub repository as a Zip file.}
-    \item \textit{Login to your Overleaf account.}
-    \item \textit{In your Project area, click in the menu and then: New Project \(\to\) Upload Project.}
-    \item \textit{Upload the Zip file.}
-    \item \textit{Let Overleaf compile the document.}
-\end{enumerate}
+\subsection{Repair Algorithm}
 
-If you choose to use a local editor, you must first install \LaTeX~on your machine. For this, there are several options, but I personally recommend either \href{https://www.tug.org/texlive/}{TeX-Live} or \href{https://miktex.org/}{MikTeX}. After installing \LaTeX, you will need to select an editor for writing and editing your documents. To help with this decision, I suggest checking out this helpful \href{https://tex.stackexchange.com/questions/339/latex-editors-ides}{post}, which provides a comprehensive overview of various editors you can use. Once \LaTeX~and your editor are set up, simply clone or download the \href{https://github.com/joseareia/ipleiria-thesis/releases}{latest} version of the template from GitHub and start using it!
+Lipsum
 
-\begin{block}[tip]
-\textit{Within the official GitHub repository, you will find a \href{https://github.com/joseareia/ipleiria-thesis/blob/master/Makefile}{Makefile} and a \href{https://github.com/joseareia/ipleiria-thesis/blob/master/.latexmkrc}{Latexmk} configuration file, both of which can be used to compile this project. The Makefile utilises \texttt{rubber} as the compiler and has a dependency of \texttt{inotify-tools}. Feel free to use whichever option best suits your needs.}
-\end{block}
+\subsection{Termination Criterion}
 
-\section{Getting Help}
-As a newcomer, you may encounter situations where you want to do something in \LaTeX~or with this template but aren't sure how. When questions arise, you have several options. First, you can read the wiki available in the \href{https://github.com/joseareia/ipleiria-thesis}{GitHub} repository for this template. Another great option is the \href{https://tex.stackexchange.com/}{TeX Stack Exchange}, an active community that can help with nearly any issue. Of course, Google is always a reliable resource. If all else fails, feel free to contact me directly with any questions about the template. You can reach me at \textit{\textcolor{blue}{\myuline{jose.apareia@gmail.com}}}.
+Lipsum
 
-\subsection{Issues, Feature Request and Suggestions}
-If, by any chance, you encounter a bug, have a suggestion, or would like to request a feature, you can submit them via the \textit{Issues} tab in the \href{https://github.com/joseareia/ipleiria-thesis}{GitHub} repository. Please be as descriptive as possible when reporting issues, and make sure to provide the appropriate labels to help me triage them effectively.
 
-For feature requests or suggestions, you can either follow the steps mentioned above or, if you prefer, you can implement the feature yourself and submit a pull request. Both pull requests and pushes trigger a \href{https://github.com/joseareia/ipleiria-thesis/actions/workflows/latex.yml}{GitHub Action} that will automatically compile the document. If the compilation fails, the pull request will be automatically rejected. Please keep this in mind and take care when submitting changes.
+% - velocity components (and coefficients)
+% - termination criterion
+% - repair algorithm (bounce, clip, reinitialize)
+% - early variants (Local Best PSO)
 
-\subsection{In-Built Comments, Guidance Texts and Warnings}
-Within this document template, you may encounter informational text displaying the message ``Writing Guidance.'' These sections are provided solely as guidance to help users understand what content should be included in specific sections. They are not related to the \LaTeX~code itself within this template.
 
-While navigating through the template, especially the configuration files, you will notice that everything is thoroughly commented. \LaTeX~can sometimes be difficult to understand without proper documentation for the packages we are working with. With that in mind, I have made an effort to comment on all the changes I've made. Occasionally, I may forget or deem it unnecessary to comment on simpler changes, but more advanced modifications are always accompanied by detailed comments.
+\section{Applications}
 
-Finally, regarding warnings: please take them into consideration when compiling the document. As you may have noticed, the template is designed to be free of warnings, so please strive to maintain this clean compilation.
+Optimization is a fundamental task across numerous scientific, engineering, and industrial domains, involving the determination of the best values for a set of parameters to satisfy some measure of optimality, often subject to certain constraints. \Glspl{optimization-problem}  can vary significantly in their characteristics, including whether the variables are continuous or discrete, if constraints are present, the nature of the objective function (e.g., linear, non-linear, unimodal, multimodal), and the dimensionality of the \gls{search-space}.
+Particle Swarm Optimization has emerged as a powerful and versatile metaheuristic for addressing a broad spectrum of such challenges. A central strength of PSO lies in its ability to operate without requiring gradient information, making it particularly useful for problems where derivatives are unavailable, unreliable, or costly to compute.
 
-\section{Important Notices}
-Although this template is specifically tailored for students from all six schools of the Polytechnic University of Leiria, you are welcome to use it if you are from a different institution. It is highly customisable and can be easily modified to suit the needs of other schools. If your school is interested in adopting this as the official template, please contact me first. 
+Shortly after the original formulation of the algorithm, a binary variant was introduced \citep{kennedy1997discrete}, extending PSO to discrete search spaces by interpreting particle velocities as probabilities of bit flips, typically using a sigmoid transformation. 
+It was also adapted to multi-objective optimization, giving rise to a family of MOPSO algorithms designed to approximate Pareto-optimal fronts for problems with conflicting objectives \citep{alvarezbenitez2005mopso, nebro2009smpsomcdm, shao2025improved}.
 
-If you decide to use this template, please consider acknowledging it in your work. To do so, simply cite it using \verb|\citep{IPLeiriaThesis}|. You can also show your appreciation for this template by giving a \href{https://github.com/joseareia/ipleiria-thesis/stargazers}{star} on the GitHub repository. This helps increase its visibility, and you will receive notifications about the latest updates and releases. Either way, acknowledging this work, which involved significant effort and countless hours, would be greatly appreciated.
+
+Even though the experiments presented in \autoref{cp:experiment} of this study focus primarily on the set of selected complex, single-objective, real-valued benchmark problems—spanning unconstrained, multivariate, non-linear, unimodal and multimodal, as well as derivative and non-derivative scenarios---the literature offers numerous examples of PSO being applied to real-world optimization tasks. Due to its versatility and effectiveness across diverse problem types, PSO has found successful application in a wide range of fields, including
+electrical and electronic engineering \citep[e.g.,][]{jin2024improved, salvatierra2024pso, dibya2025optimized},
+automation and control systems \citep[e.g.,][]{duan2024using,urgan2024pso,gil2024platooning}, 
+communication theory \citep[e.g.,][]{qiao2025resource,jin2024overview,jin2025design}, 
+operations research \citep[e.g.,][]{li2025ore,omran2025empirical,dong2022optimized, palaniappan2025task, simaiya2024hybrid}, 
+mechanical and civil engineering \citep[e.g.,][]{ramkumar2025intelligent,wang2025optimisation,houssein2025recent}, 
+energy systems \citep[e.g.,][]{bade2025multi,zhang2024energy,hamza2024optimization}, 
+biomedical engineering \citep[e.g.,][]{mallik2024swarm}, 
+data mining \citep[e.g.,][]{shan2024research,zuo2024knowledge,carstensen2025efficient}, 
+machine learning \citep[e.g.,][]{alenezi2025hybrid,balavani2024enhanced,tijjani2024enhanced}, 
+robotics \citep[e.g.,][]{sharma2025swarm,liu2025design,prakash2024swarm}, 
+and many other domains. 
+
+
+
+
+
+\section{Variants}
+
+
+
+
+
+\section{Problems}
+
+
+% Welcome to the \textcolor{maincolor}{\textit{IPLeiria Thesis}} template! Thank you for choosing it for your dissertation, reports, or other projects. This template reflects countless hours of development and learning, and I hope you enjoy using it as much as I enjoyed creating it. This chapter introduces the motivation behind the template and guides you through the initial steps to start using it. In \autoref{cp:user-guide}, you will find a comprehensive guide to fully utilise the template, and \autoref{cp:latex-tutorial} provides a concise \LaTeX~tutorial to help you maximise its capabilities. Happy reading and future writing!
+
+% %%%%%%%%%%%%%%%%%%%%%
+% I've known \LaTeX~since 2020, and since then, I have been using it constantly for a wide variety of purposes. Over time, I've used and reviewed more than a hundred templates, and there is always something missing. \textit{Always}. If a template is powerful -- \textit{i.e.}, it has many options and is highly customisable -- it's often not well-organised. Conversely, if it is well-organised, it usually lacks flexibility and customisation options. Some templates even compile with numerous errors and warnings. Most importantly, the majority are not very user-friendly. For these reasons, I decided to create my own template for theses and reports, specifically tailored for the Polytechnic University of Leiria. Throughout this project, I focused on achieving four key goals: \(i)\) creating a template that is organised and well-structured in terms of file organisation, \(ii)\) ensuring it is clean yet aesthetically pleasing and professional, \(iii)\) making it customisable to suit different needs, and \(iv)\) designing it to be user-friendly, especially for newcomers.
+
+% \section{Getting Started}
+% To start using this template, you first need to know how to use \LaTeX. For this, please refer to \autoref{cp:latex-tutorial}. Once you are familiar with \LaTeX, you will need to either install it locally or use an online \LaTeX~editor.
+
+% If you prefer an online editor, I highly recommend \href{https://www.overleaf.com/}{Overleaf}. While Overleaf offers a paid subscription for extended compilation time, this template is specifically designed to compile within the limits of the free subscription plan. To use the template in Overleaf, just refer to \href{https://www.overleaf.com/latex/templates/unofficial-polytechnic-university-of-leiria-estg-thesis-slash-report-template/tqgbrncfhwgt}{official template page} and click \textit{Use as Template}. But if you prefer to use a different version of it (which I do not recommend), you can do the following:
+
+% \begin{enumerate}[font=\itshape]
+%     \setlength{\itemsep}{.375em}
+%     \item \textit{Download the \href{https://github.com/joseareia/ipleiria-thesis/releases}{desired version} from the GitHub repository as a Zip file.}
+%     \item \textit{Login to your Overleaf account.}
+%     \item \textit{In your Project area, click in the menu and then: New Project \(\to\) Upload Project.}
+%     \item \textit{Upload the Zip file.}
+%     \item \textit{Let Overleaf compile the document.}
+% \end{enumerate}
+
+% If you choose to use a local editor, you must first install \LaTeX~on your machine. For this, there are several options, but I personally recommend either \href{https://www.tug.org/texlive/}{TeX-Live} or \href{https://miktex.org/}{MikTeX}. After installing \LaTeX, you will need to select an editor for writing and editing your documents. To help with this decision, I suggest checking out this helpful \href{https://tex.stackexchange.com/questions/339/latex-editors-ides}{post}, which provides a comprehensive overview of various editors you can use. Once \LaTeX~and your editor are set up, simply clone or download the \href{https://github.com/joseareia/ipleiria-thesis/releases}{latest} version of the template from GitHub and start using it!
+
+% \begin{block}[tip]
+% \textit{Within the official GitHub repository, you will find a \href{https://github.com/joseareia/ipleiria-thesis/blob/master/Makefile}{Makefile} and a \href{https://github.com/joseareia/ipleiria-thesis/blob/master/.latexmkrc}{Latexmk} configuration file, both of which can be used to compile this project. The Makefile utilises \texttt{rubber} as the compiler and has a dependency of \texttt{inotify-tools}. Feel free to use whichever option best suits your needs.}
+% \end{block}
+
+% \section{Getting Help}
+% As a newcomer, you may encounter situations where you want to do something in \LaTeX~or with this template but aren't sure how. When questions arise, you have several options. First, you can read the wiki available in the \href{https://github.com/joseareia/ipleiria-thesis}{GitHub} repository for this template. Another great option is the \href{https://tex.stackexchange.com/}{TeX Stack Exchange}, an active community that can help with nearly any issue. Of course, Google is always a reliable resource. If all else fails, feel free to contact me directly with any questions about the template. You can reach me at \textit{\textcolor{blue}{\myuline{jose.apareia@gmail.com}}}.
+
+% \subsection{Issues, Feature Request and Suggestions}
+% If, by any chance, you encounter a bug, have a suggestion, or would like to request a feature, you can submit them via the \textit{Issues} tab in the \href{https://github.com/joseareia/ipleiria-thesis}{GitHub} repository. Please be as descriptive as possible when reporting issues, and make sure to provide the appropriate labels to help me triage them effectively.
+
+% For feature requests or suggestions, you can either follow the steps mentioned above or, if you prefer, you can implement the feature yourself and submit a pull request. Both pull requests and pushes trigger a \href{https://github.com/joseareia/ipleiria-thesis/actions/workflows/latex.yml}{GitHub Action} that will automatically compile the document. If the compilation fails, the pull request will be automatically rejected. Please keep this in mind and take care when submitting changes.
+
+% \subsection{In-Built Comments, Guidance Texts and Warnings}
+% Within this document template, you may encounter informational text displaying the message ``Writing Guidance.'' These sections are provided solely as guidance to help users understand what content should be included in specific sections. They are not related to the \LaTeX~code itself within this template.
+
+% While navigating through the template, especially the configuration files, you will notice that everything is thoroughly commented. \LaTeX~can sometimes be difficult to understand without proper documentation for the packages we are working with. With that in mind, I have made an effort to comment on all the changes I've made. Occasionally, I may forget or deem it unnecessary to comment on simpler changes, but more advanced modifications are always accompanied by detailed comments.
+
+% Finally, regarding warnings: please take them into consideration when compiling the document. As you may have noticed, the template is designed to be free of warnings, so please strive to maintain this clean compilation.
+
+% \section{Important Notices}
+% Although this template is specifically tailored for students from all six schools of the Polytechnic University of Leiria, you are welcome to use it if you are from a different institution. It is highly customisable and can be easily modified to suit the needs of other schools. If your school is interested in adopting this as the official template, please contact me first. 
+
+% If you decide to use this template, please consider acknowledging it in your work. To do so, simply cite it using \verb|\citep{IPLeiriaThesis}|. You can also show your appreciation for this template by giving a \href{https://github.com/joseareia/ipleiria-thesis/stargazers}{star} on the GitHub repository. This helps increase its visibility, and you will receive notifications about the latest updates and releases. Either way, acknowledging this work, which involved significant effort and countless hours, would be greatly appreciated.
 
 
 

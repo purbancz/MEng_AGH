@@ -6,7 +6,8 @@
 	sorting=nyt, % Sort references by name, year, and title.
     natbib=true, % Enable natbib compatibility.
     dashed=false, % Always display author names in the bibliography.
-    uniquelist=false % Display only the first author (e.g., Author et al., Year).
+    uniquelist=false, % Display only the first author (e.g., Author et al., Year).
+    uniquename=false
 ]{biblatex}
 
 \setlength\bibitemsep{1.5\itemsep} % Increase spacing between bibliography items.
@@ -18,6 +19,8 @@
   maxcitenames=2,
   mincitenames=1
 }
+
+
 \DeclareFieldFormat{citehyperref}{%
     \DeclareFieldAlias{bibhyperref}{noformat}%
     \bibhyperref{#1}%
