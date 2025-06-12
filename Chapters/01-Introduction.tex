@@ -241,17 +241,110 @@ While swarms in nature can number in the thousands or even millions, PSO has bee
 Ultimately, the optimal swarm size is problem-dependent, varying with characteristics of the objective landscape such as smoothness, modality, or dimensionality. It is commonly treated as a tunable hyperparameter, often adjusted through empirical calibration or automated tuning procedures. In the experiments presented in \autoref{cp:experiment}, the swarm size has been excluded from parameter tuning and was fixed at \( N = 100 \) for all PSO variants tested across all benchmark problems.
 
 
-\subsection{Inertia}
+\subsection{Inertia Weight}
 
-Lipsum
+Inertia refers to the contribution of a particle's previous velocity to its current velocity update and acts as a memory term, sustaining previous trajcetories. If this influence were left unbounded, the algorithm would become unstable, often exhibiting oscillatory behavior with amplitudes increasing over successive iterations.
+Historically, in the earliest implementations of PSO, the primary mechanism to control unstable, oscillating, and divergent particle trajectories and prevent velocities from ``exploding'' to large values was velocity clamping. This involved setting an upper bound ($v_{\text{max}}$) for the velocity components. If a particle's velocity exceeded this maximum in any dimension, it was simply truncated to $v_{\text{max}}$. Although velocity clamping helped limit excessive movement and supported global exploration, it introduced several challenges. The optimal value o $v_{\text{max}}$ was highly problem-dependent and difficult to tune. Moreover, clamping did not guarantee convergence, and often led to particles bouncing along or becoming clipped to the boundaries of the \gls{search-space}.
 
-\subsection{Cognitive Component}
+To address these limitations, the \textit{inertia weight}, $\omega$, was introduced by \citeauthor{shi1998modified} \parencite*{shi1998modified,shi1999empirical}. This parameter directly scales the contribution of the particle's previous velocity to its current velocity update. It governs how much of the particle's current velocity is retained in the next iteration. Intuitively, higher inertia weight values promote exploration by allowing particles to move more freely across the search space. However, if too large, it can cause the swarm to diverge or overshoot optimal solutions.
+Lower values  enhances exploitation by reducing the particle's acceleration, allowing for finer, local searches around promising areas.  Extremely low values can limit the swarm's exploration ability, leading to premature convergence or stagnation in local optima.
 
-Lipsum
+\citet{clerc2002particle} introduced the constriction coefficient $\chi$ as an alternative to the inertia weight, also aimed at controlling swarm dynamics and ensuring convergence. Although their formulations differ, a PSO with a constriction coefficient is algebraically equivalent to a PSO with an inertia weight. This means that, properly tuned, both approaches can achieve similar performance and guarantee convergence without the need for arbitrary $v_{\text{max}}$ clamping. Despite their theoretical equivalence, the inertia-weight formulation has become the more widely adopted approach in the literature and remains the standard in most contemporary PSO implementations.
 
-\subsection{Social Component}
+The choice of $\omega$ must be made in conjunction with the acceleration coefficients, $c_1$ and $c_2$. Theoretical studies have established conditions for guaranteed convergent particle trajectories. For a simplified PSO system
+\begin{equation}
+   1 > \omega > \frac{1}{2}(c_1 + c_2) - 1 \geq 0 
+\end{equation}
+ensures convergence to an equilibrium state \citep{vandenbergh2006study,trelea2003particle}.
+This condition is critical for understanding when a particle's trajectory will converge, diverge, or exhibit cyclic behavior. These studies also show the sets of parameters that lead to divergent or oscillating trajectories.
 
-Lipsum
+While most PSO implementations used a static (constant) inertia weight, dynamic strategies have also been widely adopted to optimize performance across different stages of the search. Common strategies include decreasing $\omega$ from a high initial value to a lower final value either linearly
+\citep[e.g.,][]{zheng2003convergence,guan2022improved}
+or non-linearly \citep[e.g.,][]{naka2002hybrid,chen2006natural}, 
+random selection of $\omega$ \citep[e.g.,][]{lin2019hybrid,fauzi2023inertia},
+adjustment controlled by fuzzy logic \citep[e.g.,][]{shi2001fuzzy, nobile2018fuzzy}
+and many others, including performance-based adaptation \citep[e.g.,][]{borowska2017nonlinear,zhang2023elite}.
+
+In this study, a static inertia weight is employed. The value of 
+$\omega$
+ is tuned jointly with the acceleration coefficients 
+$c_1$ and $c_2$
+  for each PSO variant tested.
+
+% In the present study, a static inertia weight is employed. The value of 
+% $\omega$
+%  is tuned jointly with the acceleration coefficients 
+% $c_1$ and $c_2$
+%   for each PSO variant tested, as described in the experimental section in \autoref{cp:experiment}.
+
+
+
+
+\subsection{Acceleration Coefficients}
+
+
+\subsubsection{Cognitive Component}
+
+
+The cognitive component embodies an individual particle's experiential knowledge or ``individual thinking''. It encourages a particle to return towards its own personal best position, $b_i$, found since the search began. This inherent pull towards a particle's historical success is mathematically represented by on of the components in the velocity update equation \eqref{eq:velocity_update}:
+Now, the custom formatted equation:
+\begin{equation*}
+  \makebox[\linewidth][c]{%
+    \makebox[0pt][l]{$\texttt{std}_\text{cog}$}%
+    \hfill%
+    $c_1 r_1 (b_{i}^{j} - x_{i}^{j})$%
+    \hfill%
+    \refstepcounter{equation}%
+    \makebox[0pt][r]{(\theequation)}%
+  }
+  \label{eq:custom_short_example}
+\end{equation*}
+\begin{equation}
+c_1 r_1 (b_{i}^{j} - x_{i}^{j}) \tag{$\texttt{std}_\text{cog}$}
+\end{equation}
+\begin{equation}
+\texttt{std}_\text{cog} = c_1 r_1 (b_{i}^{j} - x_{i}^{j})
+\end{equation}
+where, as previously, $x_i$ is the particle's current position, $b_i$ is the best position the $i$-th particle has discovered so far, $r_1$ is a random number sampled from a uniform distribution between 0 and 1, and $c_1$ is the \textit{cognitive acceleration coefficient}.
+
+
+Intuitively, the cognitive component, by directing particles towards their individual best solutions, primarily facilitates local search and exploitation within the particle's discovered vicinity.
+The cognitive acceleration coefficient (c1) acts as a "confidence parameter", quantifying how much confidence a particle places in its own personal best experience. 
+
+
+\subsubsection{Social Component}
+
+The social component represents the collective or shared knowledge within the swarm. It encourages a particle to move towards the global best position found by any particle in the entire swarm. This attraction to a "group norm or standard" is a core tenet of PSO's sociological inspiration. Mathematically, it appears in the part of particle's velocity update equation  \eqref{eq:velocity_update}:
+
+<equation>
+
+where, as previously, $x_i$ is the particle's current position, $b_g$ is the best position found by the swarm up to current iteration, $r_2$ is a random number sampled from a uniform distribution between 0 and 1, and $c_2$ is the \textit{social acceleration coefficient}.
+
+
+Intuitively, the social component primarily facilitates global search and exploration. It pulls particles towards the most successful areas identified collectively, fostering the propagation of good solutions throughout the swarm. The social acceleration coefficient c2 acts as a "trust parameter" that quantifies how much confidence a particle places in its neighbors' success.
+
+\subsubsection{Parameter Selection}
+
+The value of c1 and c2, critically influences the balance between exploration and exploitation in the PSO algorithm.
+\begin{itemize}
+    \item If c1 is significantly larger than c2, particles are more strongly attracted to their own personal best positions, which can lead to "excessive wandering" or an inefficient exploration of new global areas, as particles may get stuck focusing only on their individual paths without sufficient pull towards the global optimum.
+    \item Conversely, if c1 is zero, particles rely solely on the social component, turning the entire swarm into a single stochastic hill-climber attracted to one point ($b_g$).
+    \item If c2 is significantly larger than c1 (the cognitive coefficient), particles are more strongly attracted to the global best position, which can cause them to rush prematurely towards optima, potentially leading to premature convergence if the $b_g$ is a local minimum.
+    \item Conversely, if c2 is zero, particles will rely solely on their individual best positions, reducing the swarm's overall exploratory ability and potentially leading to suboptimal solutions. In such model, there is no interaction between particles.
+\end{itemize}
+
+The divagations on the social only and-cognitive only models can be found in \citep[][]{}.
+
+In the literature the most common strategy is to keep the accelaration coefficient constant and this is the approach taken in this study. However, there are some implementations that implement adaptive strategies \citep[e.g.,][]{} or bind one coeficient in relationship with the other \citep[e.g.,][]{}.
+
+Wrong initialization of $c_1$ and $c_2$ may lead to divergent and oscilatiory behaviour of the swarm just the same as it was in the case of inertia weight.
+
+
+
+
+
+
+
 
 \subsection{Repair Algorithm}
 
