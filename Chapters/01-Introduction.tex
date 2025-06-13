@@ -153,10 +153,10 @@ The velocity update equation preserves momentum from the previous direction whil
     \draw[vector_style, densely dotted] (xi_t) -- node[component_label_style, above] {$\omega v_{i}$} ($(xi_t) + (inertia_vec)$) coordinate (tip_inertia);
     
     % 2. Cognitive component (starting from tip of inertia)
-    \draw[vector_style, dashed] (tip_inertia) -- node[component_label_style, above, near end] {$c_1 r_1 (p_{i} - x_{i})$} ($(tip_inertia) + (cognitive_vec)$) coordinate (tip_cognitive);
+    \draw[vector_style, dashed] (tip_inertia) -- node[component_label_style, above, near end] {$c_1 r_1 (b_{i} - x_{i})$} ($(tip_inertia) + (cognitive_vec)$) coordinate (tip_cognitive);
     
     % 3. Social component (starting from tip of cognitive)
-    \draw[vector_style, dash dot] (tip_cognitive) -- node[component_label_style, above] {$c_2 r_2 (p_{g} - x_{i})$} ($(tip_cognitive) + (social_vec)$) coordinate (tip_social);
+    \draw[vector_style, dash dot] (tip_cognitive) -- node[component_label_style, above] {$c_2 r_2 (b_{g} - x_{i})$} ($(tip_cognitive) + (social_vec)$) coordinate (tip_social);
 
     \end{tikzpicture}
     \caption[Geometric illustration of PSO's position and velocity update]{Geometric 2-dimensional illustration of a single particle's position and velocity update in PSO.}
@@ -191,7 +191,7 @@ Upon completion, the global best position discovered by any particle during the 
 \begin{algorithm}[H]
 \caption{Particle Swarm Optimization (PSO)}\label{alg:pso}
 % \caption{PSO}
-\KwIn{Swarm size \(N\), acceleration coefficients \(c_1\) and \(c_2\), inertia weight \(\omega\)}
+\KwIn{Swarm size \(N\), acceleration coefficients \(c_1\) and \(c_2\), inertia weight \(w\)}
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities\;
 Evaluate the fitness of each particle\;
@@ -306,6 +306,7 @@ where, as previously explained, $x_i$ is the particle's current position, $b_g$ 
 Intuitively, the social component primarily facilitates global search and exploration. It pulls particles towards the most successful areas identified collectively, fostering the propagation of good solutions throughout the swarm. The social acceleration coefficient $c_2$ acts as a ``trust parameter'' that quantifies how much confidence a particle places in its peers' or group success.
 
 \subsubsection{Parameter Selection}
+% \vspace{.935em}
 
 The value of $c_1$ and $c_2$ critically influences the balance between exploration and exploitation in the PSO algorithm.
 \begin{itemize}
@@ -329,19 +330,115 @@ These include schemes that dynamically adjust the coefficients during the optimi
 
 
 
-\subsection{Repair Algorithm}
+\subsection{Boundary Management}
 
-Lipsum
+In Particle Swarm Optimization (PSO), particles, which represent candidate solutions, traverse a multidimensional \gls{search-space} based on their own best-found positions (personal best or $b_i$) and the overall swarm's best-found position (global best or $b_g$). During this iterative movement, particularly due to the velocity update mechanisms, particles can sometimes exceed the predefined boundaries of the \gls{search-space}. Such boundary violations are problematic because they can lead to particles exploring infeasible regions, diverging uncontrollably from the optimization task, or causing computational errors if the objective function is undefined outside its specified domain. To address this, various \textit{repair methods} or \textit{boundary handling techniques} have been developed to manage particles that approach or cross these boundaries, aiming to maintain search integrity, ensure solution feasibility, and effectively balance exploration and exploitation.
 
-\subsection{Termination Criterion}
+Key repair and boundary handling mechanisms are listed below. Some of them are PSO-specific, others are characteristic to any population-based optimization algorithm.
 
-Lipsum
+\subsubsection{Absorption}
+    
+    If a particle’s position exceeds a boundary, it is confined by projecting it back to the nearest valid point within the defined \gls{search-space}. This process, commonly known as clipping, involves replacing the violating coordinate with its nearest feasible boundary value. Formally, for each dimension $j$:
+    \begin{equation}
+        x_{i}^{j}{}' \leftarrow \min(\max(x_{i}^{j}{}', x_{\min}^{j}), x_{\max}^{j}),
+    \end{equation}
+    where $x_{\min}$ and $x_{\max}$ stand for the lower and upper bounds for dimension $j$, respectively.
+    This method applies not only to continuous variables but can also be adapted for discrete variables (by rounding to the nearest valid integer), or even combinatorial problems (by adjusting to satisfy unique coordinate requirements).
+    
+\subsubsection{Reflection}
+    When a particle's proposed position exceeds a boundary, its excess displacement is reversed---in effect, the position is reflected across the bound. 
+Additionally, in my implementation, the velocity is reversed and damped, depending on how many times it being reflected, mimicking elastic bouncing behavior.
+% Formally, suppose a coordinate $x_{i}^{j}{}'$ crosses the lower or upper bound for dimension $j$:
+% \begin{equation}
+% x_{i}^{j}{}' = 
+% \begin{cases}
+% x_{\min}^{j} + \Delta, & \text{if } n \bmod 2 = 0, \\[6pt]
+% x_{\max}^{j} - \Delta, & \text{if } n \bmod 2 = 1,
+% \end{cases}
+% \end{equation}
+% where
+% \begin{equation}
+% \Delta = \lvert x_{i}^{j}{}' - x_{\min}^{j} \rvert \bmod r^j, \quad 
+% n = \left\lfloor \frac{ \lvert x_{i}^{j}{}' - x_{\min}^{j} \rvert }{ r^j } \right\rfloor, \quad
+% r^j = x_{\max}^{j} - x_{\min}^{j}.
+% \end{equation}
+% An analogous rule applies when exceeding the upper bound by redefining the excess relative to $x_{\max}^{j}$.
+% 
+% Additionally, the corresponding velocity component is reversed in sign and damped based on the number of bounces to prevent perpetual boundary oscillations:
+% 
+% \begin{equation}
+% v_{i}^{j}{}' = 
+% \begin{cases}
+% -\, |v_{i}^{j}{}'| \cdot \gamma, & \text{if reflected}, \\[6pt]
+% |v_{i}^{j}{}'| \cdot \gamma, & \text{otherwise},
+% \end{cases}
+% \quad 0 < \gamma < 1.
+% \end{equation}
+% Here, $\gamma$ is a random or fixed damping factor that reduces kinetic energy with each bounce.
+% 
+% This reflection approach effectively handles multiple crossings by repeatedly folding the position back into the feasible interval, ensuring smooth constraint enforcement without abrupt clamping.
+This method allows particles to remain dynamically active near the boundaries while preventing them from escaping the search space.
+
+\subsubsection{Penalization}
+    Instead of modifying the position directly, the objective function is augmented with a penalty term that discourages infeasible solutions by reducing their fitness \citep[see, e.g.,][]{parsopoulos2002particle}.
+% \subsubsection{Rejection (Unconfined Repair)}% (maybe one-word term with -ion suffix - rejection?)\\
+\subsubsection{Exclusion}
+    This method allows particles to temporarily ``roam'' into infeasible space before being implicitly  ``repaired.''  \citet{hu2002solving} proposed an approach where $b_i$ and $b_g$ are updated only if the current position is better and violates no constraints, ensuring that both values always remain feasible.
+    Invalid particles are then implicitly pulled back towards the feasible space over time. This prevents infeasible information from propagating through the swarm and influencing the swarm’s trajectory.  
+    % \begin{equation}
+    %     \vec{b}_i' =
+    %     \begin{cases}
+    %     \vec{x}_i', & \text{if } f(\vec{x}_i') \le f(\vec{b}_i) 
+    %     \ \text{and} \ 
+    %     \forall_j x_{\min}^j \le x_i^{j}{}' \le x_{\max}^j, \\[6pt]
+    %     \vec{b}_i, & \text{otherwise}.
+    %     \end{cases}
+    % \end{equation}
+    % \begin{equation}
+    %     \vec{b}_g' = 
+    %     \arg\min_{
+    %     \substack{
+    %     \forall_j x_{\min}^j \le b_i^{j}{}' \le x_{\max}^j,
+    %     }
+    %     }
+    %     f(\vec{b}_i').
+    % \end{equation}
+    % This strategy
+    It 
+    % can enhance exploration near the edges of the feasible hypercube of solutions but
+    is most effective when the proportion of infeasible particles remains low; if too many particles are infeasible, swarm diversity may be insufficient to cover the \gls{search-space} adequately.
+\subsubsection{Cancellation}
+    Components that cause boundary violations are disregarded in the velocity update, effectively canceling their influence.
+\subsubsection{Reversion}
+    A violating component can be replaced by its opposite, possibly scaled by a damping coefficient, to redirect the particle back into the feasible region \citep[cf.][]{clerc2006particle}.
+\subsubsection{Transposition}
+    In some designs---especially for periodic or toroidal search spaces---a particle that exits one boundary re-enters from the opposite side. This is analogous to wrap-around or tiling in numerical simulations.
+\subsubsection{Reinitialization}
+    Replacing infeasible particles with new randomly generated positions from the \gls{search-space}. This approach may be beneficial in cases where the feasible space is made up of a number of disjointed regions. The strategy will allow particles to cross boundaries of one feasible region to explore another feasible region.
+\subsubsection{Relocation}
+     \citet{elgallad2002enhancing}  proposed replacing an infeasible particle’s position  with their last feasible personal best.
+
+\vspace{.935em}
 
 
-% - velocity components (and coefficients)
-% - termination criterion
-% - repair algorithm (bounce, clip, reinitialize)
-% - early variants (Local Best PSO)
+In practice, boundary handling often includes additional choices regarding the particle's velocity. Upon repair, the velocity can be preserved, reversed, reset to zero, or reinitialized. For an in-depth discussion and empirical comparisons of boundary handling methods in PSO, see \citep{chu2011handling} and \citep{padhye2013boundary}.
+
+While boundary handling is fundamental for maintaining solution feasibility and preventing uncontrolled divergence, overly rigid methods can prematurely restrict the search space, potentially leading to entrapment in suboptimal local minima. Conversely, allowing controlled, transient excursions into infeasible regions can sometimes enhance the algorithm's global search capability, particularly in problems characterized by complex or disconnected feasible spaces. Effective boundary management is thus inherently problem-dependent and often requires careful tuning and empirical validation.
+In this study, the absorption method is employed (without modifying the velocity). Preliminary tests done during parameter tuning indicated that this approach produced more stable and reliable results across all tested PSO variants, at least when comparing it with reflection and reinitialization.
+
+
+\subsection{Termination Criteria}
+
+In the context of stochastic optimization algorithms, termination criteria are essential mechanisms that determine when the iterative search process should conclude. The design of these criteria critically influences the algorithm’s efficiency and the quality of the solutions obtained. The overarching goal is to halt the optimization either when a sufficiently good solution has been found or when further computational effort is unlikely to produce meaningful improvement.
+
+Termination strategies can be broadly categorized into direct criteria and adaptive, convergence-based methods that detect stagnation.
+
+\subsubsection{Direct Termination Criteria}
+
+
+
+
+
 
 
 \section{Applications}
@@ -377,6 +474,15 @@ and many other domains.
 
 
 \section{Problems}
+
+
+
+
+% - velocity components (and coefficients)
+% - termination criterion
+% - repair algorithm (bounce, clip, reinitialize)
+% - early variants (Local Best PSO)
+
 
 
 % Welcome to the \textcolor{maincolor}{\textit{IPLeiria Thesis}} template! Thank you for choosing it for your dissertation, reports, or other projects. This template reflects countless hours of development and learning, and I hope you enjoy using it as much as I enjoyed creating it. This chapter introduces the motivation behind the template and guides you through the initial steps to start using it. In \autoref{cp:user-guide}, you will find a comprehensive guide to fully utilise the template, and \autoref{cp:latex-tutorial} provides a concise \LaTeX~tutorial to help you maximise its capabilities. Happy reading and future writing!
