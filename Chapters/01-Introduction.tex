@@ -282,65 +282,48 @@ $c_1$ and $c_2$
 
 \subsection{Acceleration Coefficients}
 
-
 \subsubsection{Cognitive Component}
 
-
-The cognitive component embodies an individual particle's experiential knowledge or ``individual thinking''. It encourages a particle to return towards its own personal best position, $b_i$, found since the search began. This inherent pull towards a particle's historical success is mathematically represented by on of the components in the velocity update equation \eqref{eq:velocity_update}:
-Now, the custom formatted equation:
-\begin{equation*}
-  \makebox[\linewidth][c]{%
-    \makebox[0pt][l]{$\texttt{std}_\text{cog}$}%
-    \hfill%
-    $c_1 r_1 (b_{i}^{j} - x_{i}^{j})$%
-    \hfill%
-    \refstepcounter{equation}%
-    \makebox[0pt][r]{(\theequation)}%
-  }
-  \label{eq:custom_short_example}
-\end{equation*}
-\begin{equation}
-c_1 r_1 (b_{i}^{j} - x_{i}^{j}) \tag{$\texttt{std}_\text{cog}$}
-\end{equation}
+The cognitive component embodies an individual particle's experiential knowledge---sometimes interpreted as a form of self-reflection. It encourages a particle to return towards its own personal best position, $b_i$, found since the search began. This inherent pull towards a particle's historical success is mathematically represented by one of the components in the velocity update equation \eqref{eq:velocity_update}:
 \begin{equation}
 \texttt{std}_\text{cog} = c_1 r_1 (b_{i}^{j} - x_{i}^{j})
+\label{eq:std_cog_component}
 \end{equation}
-where, as previously, $x_i$ is the particle's current position, $b_i$ is the best position the $i$-th particle has discovered so far, $r_1$ is a random number sampled from a uniform distribution between 0 and 1, and $c_1$ is the \textit{cognitive acceleration coefficient}.
-
+where, as previously introduced, $x_i$ is the particle's current position, $b_i$ is the best position the $i$-th particle has discovered so far, $r_1$ is a uniformly distributed random number in [0, 1], and $c_1$ is the \textit{cognitive acceleration coefficient}.
 
 Intuitively, the cognitive component, by directing particles towards their individual best solutions, primarily facilitates local search and exploitation within the particle's discovered vicinity.
-The cognitive acceleration coefficient (c1) acts as a "confidence parameter", quantifying how much confidence a particle places in its own personal best experience. 
-
+The cognitive acceleration coefficient ($c_1$) acts as a ``confidence parameter'', quantifying the degree to which a particle trusts its own personal best experience. 
 
 \subsubsection{Social Component}
 
-The social component represents the collective or shared knowledge within the swarm. It encourages a particle to move towards the global best position found by any particle in the entire swarm. This attraction to a "group norm or standard" is a core tenet of PSO's sociological inspiration. Mathematically, it appears in the part of particle's velocity update equation  \eqref{eq:velocity_update}:
+The social component represents the collective or shared knowledge within the swarm. It encourages a particle to move towards the global best position found by any particle in the entire swarm. This attraction to a ``group norm'' or ``standard'' is a core tenet of PSO's sociological inspiration. Mathematically, it appears in another part of particle's velocity update equation  \eqref{eq:velocity_update}:
+\begin{equation}
+\texttt{std}_\text{soc} = c_2 r_2 (b_{g}^{j} - x_{i}^{j})
+\label{eq:std_soc_component}
+\end{equation}
+where, as previously explained, $x_i$ is the particle's current position, $b_g$ is the global best position found by the swarm up to current iteration, $r_2$ is a random number sampled from a uniform distribution between 0 and 1, and $c_2$ is the \textit{social acceleration coefficient}.
 
-<equation>
-
-where, as previously, $x_i$ is the particle's current position, $b_g$ is the best position found by the swarm up to current iteration, $r_2$ is a random number sampled from a uniform distribution between 0 and 1, and $c_2$ is the \textit{social acceleration coefficient}.
-
-
-Intuitively, the social component primarily facilitates global search and exploration. It pulls particles towards the most successful areas identified collectively, fostering the propagation of good solutions throughout the swarm. The social acceleration coefficient c2 acts as a "trust parameter" that quantifies how much confidence a particle places in its neighbors' success.
+Intuitively, the social component primarily facilitates global search and exploration. It pulls particles towards the most successful areas identified collectively, fostering the propagation of good solutions throughout the swarm. The social acceleration coefficient $c_2$ acts as a ``trust parameter'' that quantifies how much confidence a particle places in its peers' or group success.
 
 \subsubsection{Parameter Selection}
 
-The value of c1 and c2, critically influences the balance between exploration and exploitation in the PSO algorithm.
+The value of $c_1$ and $c_2$ critically influences the balance between exploration and exploitation in the PSO algorithm.
 \begin{itemize}
-    \item If c1 is significantly larger than c2, particles are more strongly attracted to their own personal best positions, which can lead to "excessive wandering" or an inefficient exploration of new global areas, as particles may get stuck focusing only on their individual paths without sufficient pull towards the global optimum.
-    \item Conversely, if c1 is zero, particles rely solely on the social component, turning the entire swarm into a single stochastic hill-climber attracted to one point ($b_g$).
-    \item If c2 is significantly larger than c1 (the cognitive coefficient), particles are more strongly attracted to the global best position, which can cause them to rush prematurely towards optima, potentially leading to premature convergence if the $b_g$ is a local minimum.
-    \item Conversely, if c2 is zero, particles will rely solely on their individual best positions, reducing the swarm's overall exploratory ability and potentially leading to suboptimal solutions. In such model, there is no interaction between particles.
+    \item If $c_1$ is significantly larger than $c_2$, particles are more strongly attracted to their own personal best positions, which can lead to ``excessive wandering'' or an inefficient exploration of new global areas, as particles may get stuck focusing only on their individual paths without sufficient pull towards the global optimum.
+    Conversely, if $c_1 = 0$, particles rely solely on the social component, turning the entire swarm into a single stochastic hill-climber attracted to one point ($b_g$).
+    \item If $c_2$ is significantly larger than $c_1$, particles are more strongly attracted to the global best position, which can cause them to rush prematurely towards optima, potentially leading to premature convergence if the $b_g$ is a local minimum.
+    Conversely, if $c_2 = 0$, particles will rely solely on their individual best positions, reducing the swarm's overall exploratory ability and potentially leading to suboptimal solutions. In such model, there would be no interaction between particles.
 \end{itemize}
+One should keep in mind that, as with the inertia weight, poor initialization of $c_1$ and $c_2$ may also lead to divergent and oscillatory behavior of the swarm \citep[][]{engelbrecht2007computational}. Further discussion, comparative analysis and extensions of social-only and cognitive-only models can be found in \citep[][]{kennedy1997particle,brits2002niching,liu2019hierarchical,chen2025multi}.
 
-The divagations on the social only and-cognitive only models can be found in \citep[][]{}.
+In most PSO implementations, the acceleration coefficients are typically maintained at constant values throughout the optimization process. This convention also followed in the present study. Nonetheless, several alternative strategies  have been proposed in the literature.
+% These include dynamically adjusting one or both coefficients during the run \citep[e.g.,][]{ratnaweera2002pso,watanabe2024nonlinear,tian2024improved}, adapting them to the current state of the swarm
+% \citep[e.g.,][]{zhan2007adaptive,wang2011selfadaptive,wang2018hybrid,bonthagorla2025fast}, or binding one to the other via a functional relationship \citep[e.g.,][]{cleghorn2022particle,yin2023reinforcement}.
+These include schemes that dynamically adjust the coefficients during the optimization run \citep[e.g.,][]{ratnaweera2002pso,watanabe2024nonlinear,tian2024improved}, approaches that adapt the coefficients based on the swarm's current state or performance indicators \citep[e.g.,][]{zhan2007adaptive,wang2011selfadaptive,wang2018hybrid,bonthagorla2025fast}, or coupling one coefficient through functional relationship with the other \citep[e.g.,][]{cleghorn2022particle,yin2023reinforcement}.
 
-In the literature the most common strategy is to keep the accelaration coefficient constant and this is the approach taken in this study. However, there are some implementations that implement adaptive strategies \citep[e.g.,][]{} or bind one coeficient in relationship with the other \citep[e.g.,][]{}.
+% In the literature the most common strategy is to keep the acceleration coefficient constant and this is the approach taken in this study. However, there are some implementations that implement dynamic  \citep[e.g.,][]{} or adaptive strategies \citep[e.g.,][]{} or bind one coefficient in relationship with the other \citep[e.g.,][]{}.
 
-Wrong initialization of $c_1$ and $c_2$ may lead to divergent and oscilatiory behaviour of the swarm just the same as it was in the case of inertia weight.
-
-
-
+% As with the inertia weight, poor initialization of $c_1$ and $c_2$ may lead to divergent and oscillatory behavior of the swarm. 
 
 
 
