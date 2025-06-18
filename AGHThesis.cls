@@ -149,7 +149,10 @@
 \RequirePackage[ruled,linesnumbered,lined]{algorithm2e}
 \RequirePackage{algpseudocode}
 \RequirePackage{pgffor}
+% \RequirePackage{microtype}
 % \RequirePackage{indentfirst}
+\RequirePackage{mathtools}
+\RequirePackage{lipsum}
 \RequirePackage{tikz}
 \usetikzlibrary{arrows.meta,calc,positioning,shapes.misc}
 
