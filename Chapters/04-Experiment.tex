@@ -5,10 +5,168 @@
 \parindent0pt
 
 
+\section{Objectives}
 
-\section{Experiment Design}
 
-\subsection{Parameter Tuning}
+The primary goal of the experiments is to rigorously evaluate the effectiveness of the proposed diversity-enhancing strategies and their multi-hybrid combinations within the Particle Swarm Optimization (PSO) framework. Specifically, the experiments aim to compare the performance of the proposed PSO variants against two benchmarks: the canonical PSO and a basic diversity-injected variant (PerturbationPSO). This comparison provides a clear reference for assessing how informed diversity mechanisms differ from uninformed, random perturbations.
+
+An additional objective is to isolate and quantify the individual contribution of each learning strategy intended to enhance swarm diversity, as well as to examine the effects of systematically combining different particle roles within hybrid frameworks.
+
+The experimental study may thus be viewed as organized around three main groups of algorithms:
+\begin{itemize}
+    \item Baselines:
+  Two baseline algorithms are employed for benchmarking:
+    \begin{itemize}
+        \item PSO: The standard (or ``canonical'') PSO formulation without any explicit diversity-enhancing mechanism, serving as the foundational reference.
+        
+        \item PerturbationPSO: A simple extension of the canonical PSO that introduces Gaussian noise into particle positions after each update. This variant represents a naive, uninformed form of diversity injection occasionally found in the literature and highlights the contrast with structured, role-informed strategies.
+    \end{itemize}
+    
+    \item Single diversity-enhancing strategies:
+    These include individual role-based extensions that introduce informed exploration by means of
+    \begin{itemize}
+        \item repulsion from the best solutions (opposing-best strategies): RebelPSO, RejectorPSO, and RebelRejectorPSO;
+        \item attraction to the worst solutions (negative learning strategies): ContrarianPSO, DefeatistPSO, and ContrarianDefeatistPSO;
+        \item repulsion from the worst solutions (reverse learning strategies): EschewerPSO, EscapistPSO, and EschewerEscapistPSO.
+    \end{itemize}
+    % (i)   (ii)  or (iii) 
+    
+    \item Multi-hybrid strategies:    
+      These include more advanced frameworks that combine multiple roles within or across the cognitive and social components of the velocity update equation: HybridFullDisjointPSO, HybridPartialDisjointPSO and HybridAdditivePSO.
+\end{itemize}
+
+% * **Single Diversity-Enhancing Strategies:**
+%   These include individual role-based extensions that introduce informed exploration by means of (i) repulsion from the best solutions (opposing-best strategies),  (ii) attraction to the worst solutions (negative learning strategies), or (iii) repulsion from the worst solutions (reverse learning strategies).
+
+% * **Multi-Hybrid Strategies:**
+%   These are more advanced frameworks that combine multiple roles within or across the cognitive and social components of the velocity update equation, aiming to achieve a balance between exploration and exploitation.
+
+% * **Baselines:**
+%   Two baseline algorithms are employed for robust benchmarking:
+
+%   * *Canonical PSO:* The standard PSO formulation without any explicit diversity-enhancing mechanism, serving as the foundational reference.
+%   * *PerturbationPSO:* A simple extension of the canonical PSO that introduces Gaussian noise into particle positions after each update. This variant represents a naive, uninformed form of diversity injection occasionally found in the literature and highlights the contrast with structured, role-informed strategies.
+
+
+
+
+
+
+
+
+\section{Benchmark Problems}
+
+Selection criteria: explain why these benchmarks were chosen (e.g., standard CEC functions, classic test functions: Sphere, Rastrigin, Ackley, Schwefel, Rosenbrock, Griewank, etc.)
+
+Problem categories:
+
+Unimodal
+
+Multimodal
+
+Deceptive
+
+High-dimensional
+
+Constrained (if any)
+
+Problem properties: dimensionality, known optimum, search domain.
+
+
+\section{Benchmark Problems}
+
+To ensure a comprehensive and fair evaluation, the algorithms are tested on a set of well-established continuous benchmark functions commonly used in the swarm intelligence and evolutionary computation literature. The selected functions cover a wide range of characteristics:
+
+\begin{itemize}
+    \item \textbf{Unimodal:} Sphere, Schwefel 2.22.
+    \item \textbf{Multimodal:} Rastrigin, Ackley, Griewank.
+    \item \textbf{Deceptive or Rugged:} Schwefel 2.26, Michalewicz, Rosenbrock.
+\end{itemize}
+
+Each function is tested in multiple dimensions (\(d = 100, 500, 1000\)), with search bounds and known optima defined according to standard references. This setup ensures that the proposed algorithms are challenged on diverse topological landscapes ranging from smooth convex to rugged multi-peaked spaces.
+
+
+\section{Experimental Setup}
+
+Algorithms tested:
+
+Your new variants (Contrarian, Defeatist, Eschewer, Escapist, all hybrids)
+
+Standard PSO
+
+Other state-of-the-art baselines (if any)
+
+Parameter settings: inertia weight, acceleration coefficients, role fractions/probabilities — justify choices (tuned vs. default).
+
+Environment: hardware specs, software libraries, random seed policy.
+
+Performance metrics: e.g., best fitness, mean fitness, standard deviation, convergence curves, runtime.
+
+Repetitions: number of independent runs per function and dimension.
+
+\section{Evaluation Criteria}
+
+Describe how you measure:
+
+Solution quality,
+
+Convergence speed,
+
+Robustness (variance across runs),
+
+Computational cost.
+
+\section{Results and Analysis}
+
+5.1 Summary Tables
+
+Tables of average best fitness, standard deviation, rank ordering.
+
+5.2 Convergence Plots
+
+Representative plots comparing convergence trajectories.
+
+5.3 Statistical Tests
+
+Formal statistical significance tests (e.g., Wilcoxon, Friedman, ANOVA) with p-values and post-hoc ranking.
+
+5.4 Sensitivity Analysis
+
+Explore effect of varying role fractions/probabilities.
+
+5.5 Scalability Analysis
+
+Results for increasing dimensionality or runtime constraints.
+
+5.6 Ablation Study
+
+Optional but valuable: isolate each role or hybrid component to quantify its isolated contribution.
+
+\section{Discussion}
+
+Interpret key findings:
+
+When does your method outperform standard PSO?
+
+Are there trade-offs in convergence speed vs. final accuracy?
+
+How does the role design affect exploration vs. exploitation balance?
+
+Highlight any consistent patterns across problem types.
+
+Discuss practical implications.
+
+\section{Limitations}
+
+Briefly acknowledge limitations (e.g., tested only on continuous functions, no dynamic environments, scalability ceilings).
+
+
+
+
+
+% \section{Experiment Design}
+
+% \subsection{Parameter Tuning}
 
 As the effectiveness of these novel \glspl{metaheuristic} hinges on the synergistic tuning of their dedicated parameters alongside the traditional PSO settings. In this study, every set of parameters of each PSO variant, including the baseline algorithm, were tuned with the same systematic, rigorous procedure to ensure a fair and meaningful comparison.
 

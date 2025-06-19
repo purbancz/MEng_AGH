@@ -53,11 +53,11 @@ Similarly, \citet{xu2025hybrid} proposed MDE-DPSO, a hybrid PSO–DE variant tha
 Empirical studies have demonstrated that perturbation techniques substantially enhance PSO’s performance on challenging multimodal benchmarks. Although the added randomness can sometimes degrade results on simple unimodal functions, it reliably prevents premature convergence, sustains population diversity, and accelerates the search for global optima. Across a wide range of test suites, PSO variants employing perturbation consistently achieve lower average fitness values, reduced variance and faster convergence rates than the canonical algorithm. Consequently, perturbation methods help ensure that PSO remains a competitive and adaptable optimizer for a broad spectrum of real-world applications. Experiments conducted in this study  (see \autoref{cp:experiment}) further corroborate these findings, confirming that perturbation mechanisms may yield significant improvements in the average solution quality.
 
 
-\subsection*{PerturbationPSO}
+\subsection{PerturbationPSO}
 
 PerturbationPSO is a straightforward implementation of a perturbation strategy for PSO. Shortly speaking, it is a variant of Particle Swarm Optimization that explicitly introduces stochastic noise to the particle's position, aiming to stimulate global exploration and mitigate the pervasive issues of premature convergence and stagnation in local minima.
 
-In PerturbationPSO, after a particle's velocity and position are updated according to the canonical PSO equations---where velocity $v_{i}^{j}{}'$ is influenced by inertia, cognitive, and social components according to equation \eqref{eq:velocity_update}, and position $x_{i}^{j}{}'$ is updated by a velocity vector according to equation \eqref{eq:position_update}---the newly calculated position is further modified by a Gaussian noise. In practice, this mechanism can be integrated directly into the fundamental position update, providing a consistent and controllable exploratory pressure. Consequently, the core mechanism of PerturbationPSO involves supplementing the standard PSO position update mechanism with an additional stochastic perturbation term. For each dimension $j$ of particle $i$, the new position $x_{i}^{j}{}'$ is given by:
+In PerturbationPSO, after a particle's velocity and position are updated according to the canonical PSO equations---where velocity $v_{i}^{j}{}'$ is influenced by inertia, cognitive, and social components according to equation \eqref{eq:velocity_update}, and position $x_{i}^{j}{}'$ is updated by a velocity vector according to equation \eqref{eq:position_update}---the newly calculated position is further modified by a Gaussian noise. In practice, this mechanism can be integrated directly into the fundamental position update, providing a consistent and controllable exploratory pressure. Consequently, the core mechanism of PerturbationPSO involves supplementing the standard PSO position update mechanism with an additional stochastic perturbation term. For each dimension $j$ of the $i$-th particle, the new position $x_{i}^{j}{}'$ is given by:
 \begin{equation}\label{eq:position_update_perturbation}
 x_{i}^{j}{}' = x_{i}^{j} + v_{i}^{j}{}' + \epsilon_{ij}, \quad \epsilon_{i}^{j} \sim \mathcal{N}(0, \sigma).
 \end{equation}
@@ -240,7 +240,7 @@ where $x_{\min}$ and $x_{\max}$ are the problem’s lower and upper bounds, resp
 
 
 
-\subsection*{RebelPSO}
+\subsection{RebelPSO}
 
 RebelPSO is one of the three straightforward implementations of opposing-best learning strategy for PSO that aim to embed the notion of ``informed'' diversity into the canonical variant of the algorithm by selectively reversing velocity update components.
 Moreover, all three opposing-best learning strategy implementations, as well as most other PSO variants introduced  later in this chapter, enhance the canonical PSO dynamics by assigning distinct behavioral roles to particles  (or---if someone is more attached to different terminology---dividing the swarm into subswarms or subpopulations).
@@ -361,7 +361,7 @@ The role of $c_3$ is to control the ``strength of rebellion.'' A higher $c_3$ va
 
 In essence, RebelPSO is a straightforward yet effective modification to the standard PSO, leveraging the principle of opposition or repulsion within a subset of the population to enhance exploration while maintaining the simplicity of a single, shared global best reference. By selectively applying this repulsive force to only a fraction of the swarm, RebelPSO maintains exploration in new regions without sacrificing the convergence behavior of the rest of the particles.
 
-\subsection*{RejectorPSO}
+\subsection{RejectorPSO}
 
 RejectorPSO is a complementary approach in the family of opposing-best learning strategies for PSO, designed to introduce another targeted form of exploration into the swarm by reversing the cognitive component of the velocity update (instead of a social component) for a specific subset of particles. 
 
@@ -369,7 +369,7 @@ Similarly to RebelPSO, RejectorPSO also enhances the original PSO algorithm by a
 a fixed fraction of the total particle swarm is designated as ``rejectors.'' Unlike standard PSO particles that are attracted to their own historical best positions ($b_i$), rejector particles deliberately reject their own personal best positions in favor of exploring opposing directions.
 While the remainder of the swarm is moving according to standard PSO dynamics defined by the equations (\ref{eq:velocity_update}-\ref{eq:gbest_update}), rebel particles
 preserve their inertia and social terms from \eqref{eq:velocity_update}, but invert their cognitive component---so that, instead of being drawn toward their personal best $b_i$, they are actively repelled from it.
-Consequently, the unique movement of each rejector particle $i$ is governed in each dimension $j$ by a modified velocity update equation:
+Consequently, the unique movement of each rejector particle $X_i$ is governed in each dimension $j$ by a modified velocity update equation:
 \begin{equation}\label{eq:velocity_update_rejector}
 % \forall_{j \in \{ 1,\ldots,d \}}
 v_{i}^{j}{}'= \omega v_{i}^{j} + 
@@ -466,7 +466,7 @@ A larger value encourages more aggressive exploration and a greater tendency for
 
 The parameter $\rho_4$ defines the "rejector fraction," which is the proportion of the total swarm size $N$ that will be designated as rejector particles and as such is contrainted in range [0,1]. The parameter directly controls the number of particles that actively deviate from their personal bests. High $\rho_4$ value means a larger proportion of the swarm is dedicated to exploration and can significantly increase population diversity throughout the optimization run. Low $\rho_4$ causes only a small subset of particles acts as rejectors, with the majority behaving as standard PSO particles.
 
-\subsection*{RebelRejectorPSO}
+\subsection{RebelRejectorPSO}
 
 RebelRejectorPSO is the third installment of the opposing-best learning strategy for PSO. 
 In contrast to the above-defined variants that introduced a single novel particle role each---either rebel or rejector----RebelRejectorPSO combines both of these roles within a single PSO framework, thereby leveraging dual repulsion mechanisms to maximize informed diversity. 
@@ -540,7 +540,7 @@ where
 
 
 
-\subsection*{ContrarianPSO}
+\subsection{ContrarianPSO}
 
 Our three implementations within the negative learning family follow the same structural principles as RebelPSO, RejectorPSO, and RebelRejectorPSO do. Like their counterparts in the opposing-best strategies family, each variant in this family aims to embed an additional notion of informed or targeted diversity into the canonical PSO framework by selectively modifying components of the velocity update equation.
 
@@ -666,7 +666,7 @@ the parameter value approaches zero. This mechanism mirrors the role of dedicate
 
 
 
-\subsection*{DefeatistPSO}
+\subsection{DefeatistPSO}
 
 DefeatistPSO represents a complementary strategy within the negative learning family of PSO variants. Its primary goal is to inject a targeted form of structured exploration by modifying the cognitive component of the velocity update equation rather than the social component. While ContrarianPSO redirects a fraction of the swarm toward the global worst position, DefeatistPSO introduces the concept of ``defeatist'' particles, which are driven instead toward their own historical personal worst positions.
 
@@ -787,7 +787,7 @@ DefeatistPSO introduces two dedicated parameters that govern the behavior of the
 The parameter $\rho_6$ determines the proportion of the swarm designated as defeatist particles during initialization. This mechanism is analogous to the use of dedicated fractions or probability terms in other strategies, for example, the contrarian fraction in ContrarianPSO.
 
 
-\subsection*{ContrarianDefeatistPSO}
+\subsection{ContrarianDefeatistPSO}
 
 ContrarianDefeatistPSO represents a comprehensive extension of the negative learning family by unifying the core principles of ContrarianPSO and DefeatistPSO within a single algorithmic framework. Its primary objective is to maximize swarm diversity and enhance the swarm’s capacity to escape local optima by explicitly assigning two subgroups of particles: one subgroup (contrarians) is attracted toward the global worst position, while the other subgroup (defeatists) targets each particle’s own personal worst position.
 
@@ -851,13 +851,13 @@ A more generalized variant is the Reverse Direction Supported Particle Swarm Opt
 
 Similarly, PSO with Avoidance of Worst Locations (PSO-AWL), developed by \citet{mason2016avoidance}, uses worst-position memory to reinforce movement toward better regions rather than purely repelling particles. The velocity update includes repulsive terms that push particles away from their own and the global worst positions, effectively biasing their trajectories towards the best-known solutions. Here, the avoidance of poor areas is achieved by repulsive force scaled by distance from the worst, aligning its direction towards the best. In the same vein, the Parallel Global Best-Worst Particle Swarm Optimization (GBWPSO) algorithm by \citet{kumar2023parallel}, inspired by the Jaya optimization framework, explicitly combines tracking of the global best with a mechanism for avoiding the global worst. This hybrid design introduces a repulsive dynamic analogous to the directional terms in other reverse-learning models, further enhancing the swarm’s ability to circumvent known low-quality regions.
 
-\subsection*{EshewerPSO}
+\subsection{EshewerPSO}
 
 EschewerPSO and the subsequent reverse-learning strategies for PSO follow the familiar algorithmic structure and share the common goal of injecting the swarm with diversity that is informed by the problem structure. However, unlike the negative strategies that attract particles toward inferior solutions, these variants introduce an explicit avoidance mechanism that drives particles away from the global (or, in later cases, personal) worst positions identified by the swarm.
 
 EschewerPSO extends the standard PSO framework by designating a fixed fraction of particles as ``eschewers.'' Operationally, during the initialization phase, a portion of the swarm is tagged with this role. These particles retain the inertia and cognitive terms in their velocity update rule, but modify the social term to push their trajectories away from regions associated with the poorest solution identified by the swarm so far.
 Specifically, eschewer particles replace the standard social component in the velocity update equation with an eschewer component that generates a repulsive force relative to the global worst position. The remaining particles adhere to the canonical PSO update rules defined by equations (\ref{eq:velocity_update}–\ref{eq:gbest_update}), augmented by the additional global worst update rule \eqref{eq:gworst_update}. 
-The velocity update for each eschewer particle $i$ in $j$ dimension is defined as:
+The velocity update for each eschewer particle $X_i$ in $j$ dimension is defined as:
 \begin{equation}\label{eq:velocity_update_eschewer}
 v_{i}^{j}{}' = \omega v_{i}^{j} +
 c_1 r_1 (b_{i}^{j} - x_{i}^{j}) +
@@ -962,12 +962,12 @@ Set global best position \(b_g\) and global worst position \(w_g\), for each par
 % force that pushes the particle away from the global worst. All other particles maintain the standard PSO update. After evaluation, all particles contribute to updating $\vec{w}_g$ and $\vec{b}_g$. This selective avoidance helps the swarm escape globally poor basins while preserving the overall convergence behavior.
 
 \enlargethispage{.1\baselineskip}
-\subsection*{EscapistPSO}
+\subsection{EscapistPSO}
 
 EscapistPSO represents a complementary strategy within the family of reverse-learning approaches. It complements EschewerPSO by targeting the other main component in the velocity update rule: instead of avoiding the swarm’s global worst position, it focuses on repelling particles from their own personal worst solutions. In this variant, a designated fraction of particles, termed ``escapists,'' replace the standard cognitive component with an escapist component that actively pushes them away from their historical worst position, $\vec{w}_i$.
 
 During initialization, a user-specified fraction of the swarm is assigned the escapist role, while all non-escapist particles follow the standard PSO update equations. Escapist particles preserve the inertia and social terms but modify the cognitive term to induce a repulsive effect relative to their personal worst regions.
-The velocity or an escapist particle $i$ in dimension $j$ is given by:
+The velocity of an escapist particle $X_i$ in dimension $j$ is given by:
 \begin{equation}\label{eq:velocity_update_escapist}
     v_{i}^{j}{}' = \omega v_{i}^{j} +
 \underbrace{c_8 r_8 (x_{i}^{j} - w_{i}^{j})}_{\mathclap{\text{escapist component}}} +
@@ -1067,7 +1067,7 @@ Set global best position \(b_g\), for each particle set personal best \(b_i\) an
 
 
 
-\subsection*{EshewerEscapistPSO}
+\subsection{EshewerEscapistPSO}
 
 EschewerEscapistPSO combines the principles of EschewerPSO and EscapistPSO within a single, unified reverse-learning framework. It explicitly assigns two specialized subgroups of particles: one subgroup (eschewers) actively avoids the global worst position, while the other subgroup (escapists) repels away from each particle’s own personal worst position.
 
@@ -1108,28 +1108,336 @@ Set global best position \(\vec{b}_g\) and global worst position \(\vec{w}_g\); 
 
 % \section{Random-Vector Injection (Erratic) Strategies}
 
-% \subsection*{AnarchicPSO}
+% \subsection{AnarchicPSO}
 % \lipsum[1]
-% \subsection*{AmnesiacPSO}
+% \subsection{AmnesiacPSO}
 % \lipsum[1]
-% \subsection*{WandererPSO}
+% \subsection{WandererPSO}
 % \lipsum[1]
-% \subsection*{NoisyPSO}
+% \subsection{NoisyPSO}
 
 
 % \section{Reinitialization (Multi-Start) Strategies}
 
 % \lipsum[1]
-% \subsection*{PartialResetPSO}
+% \subsection{PartialResetPSO}
 % \lipsum[1]
-% \subsection*{CollectiveResetPSO}
+% \subsection{CollectiveResetPSO}
 
 
 \section{Multi-Hybrid Strategies}\label{sec:hybrid}
 
-\subsection*{HybridFullDisjointPSO}
-\subsection*{HybridPartialDisjointPSO}
-\subsection*{HybridAdditivePSO}
+
+% There are plenty of various hybrids of PSO. Most often by a hybrid in this context one can understnad a blen of mix of two various metaheristics, like I said that one can rightfully claim that PerturbationPSO is a kind PSO-GA hybrid, since it involves a kind of mutation-like perturbation after standard PSO position update.
+
+% In previous section there were various  diversity-enhancing strategies for PSO. The picture how that we can draw from previous considerations is that we can have two types of points or landmarks: best and worst, and the two types of forces: attraction and repulsion. moreover, it happens within the two types of velocity update components: social and cognitive. These leave us with a map of possible diversity-engancement strategies that are "informed", it as can increase diversity in a directed manner with the use of information of the problem structure.
+
+% This section is devoted to another kind of hybrids - hybrids within various diversity-enhancing strategies for PSO that I described earlier. Here I also distinguish three kinds of hybrid strategies: those that are blending particle roles in a strictly disjoint manner, those that allow one particle role (social/cognitive) per component (social/cognitive) and those that can blend whatever role one like within one particle.
+
+
+
+
+
+
+% The core idea behind hybridizing PSO with other algorithms is to leverage complementary strengths, offsetting weaknesses present in individual methods.
+Hybridization is a compelling design strategy that integrates PSO’s social cooperation dynamics with complementary strengths from other optimization methods, resulting in algorithms that are more robust, scalable, and adaptable to diverse problem landscapes.
+A wide range of hybridizations of PSO have been proposed in the literature \citep[see, e.g.,][]{chauhan2025learning,abualigah2025particle,urbanczyk2025sequential}.
+Most commonly, the term \textit{hybrid} in this context refers to an algorithm that blends two or more distinct \glspl{metaheuristic}.
+For example, one could rightfully interpret PerturbationPSO as a form of PSO-GA hybrid,
+since it incorporates mutation\-\mbox{-like} perturbations after the standard PSO position update, thereby injecting to PSO an exploration mechanism explicitly inspired by genetic algorithms.
+
+
+Hybridization can also incorporate advanced learning strategies and adaptive mechanisms within the PSO framework itself.
+In the previous sections, various diversity\-\mbox{-enhancing} strategies for PSO were discussed in detail. A unifying perspective that emerges from this analysis is that these strategies can be systematically structured by these three principal aspects: 
+\begin{itemize}
+    \item distinctive points (landmarks): either best or worst solutions used as reference points;
+    \item driving forces: either attractive (pulling particles toward the landmark) or repulsive (pushing particles away from it);
+    \item velocity update components: these forces act within either social or cognitive term of the velocity update equation.
+\end{itemize}
+% This conceptual map provides a coherent framework for designing informed diversity-enhancement strategies that explicitly exploit knowledge of the problem’s structure. By doing so, these strategies guide the swarm’s exploratory behavior in a deliberate, ``informed'', problem-aware manner, rather than relying solely on uninformed random perturbations to maintain diversity.
+This conceptual map provides a coherent framework for designing informed diversity\--enhancement strategies that explicitly exploit knowledge of the problem’s structure, guiding the swarm’s exploratory behavior in a deliberate, problem-aware manner, rather than relying solely on uninformed random perturbations to maintain diversity.
+
+
+This section is devoted to a distinct class of multi-hybrid strategies that each integrate multiple diversity\--enhancing mechanisms within single, unified framework. The core idea behind hybridizing these mechanisms is, as previously discussed, to leverage their strengths while mitigating the limitations inherent in any single method. In this context, these three designs cover the main paradigms of multi-hybridization:
+\begin{enumerate}
+    \item Disjoint-role hybrids (HybridFullDisjointPSO), where different roles (e.g., contrarian, defeatist, eschewer, escapist) are assigned to disjoint subgroups of particles.
+    \item Component-specific hybrids (HybridPartialDisjointPSO), where each particle can assume a different role for each velocity component (cognitive and social), resulting in mixed-force behavior within the same particle.
+    \item Fully flexible hybrids (HybridAdditivePSO), where role assignment is unconstrained, allowing any combination of diversity-enhancing actions to coexist within a single particle’s update dynamics.
+\end{enumerate}
+In the following subsections, each multi-hybrid strategy is described in detail. However, before presenting these specific variants, it is necessary to formalize the general setup shared by this entire family of diversity-enhancing strategies.
+Since all implementations within this family rely on particles that may store and utilize information about both their own historical personal worst positions and the swarm's global worst position, each algorithm must be characterized according to the general framework defined in \eqref{eq:negative_pso}, and each particle must conform to the structural definition given in \eqref{eq:particle_negative}. Moreover, every particle in all these multi-hybrid algorithms:
+% \begin{itemize}
+%     \item updates its position according to the standard position update equation \eqref{eq:position_update};
+%     \item updates the global best solution according to \eqref{eq:gbest_update};
+%     \item updates its own historical personal best according to \eqref{eq:pbest_update};
+%     \item updates the global worst solution according to \eqref{eq:gworst_update};
+%     \item updates its own historical personal worst according to \eqref{eq:pworst_update_defeatist}.
+% \end{itemize}
+updates its position according to the standard position update equation \eqref{eq:position_update},
+updates the global best solution according to \eqref{eq:gbest_update},
+updates its own historical personal best according to \eqref{eq:pbest_update},
+updates the global worst solution according to \eqref{eq:gworst_update},
+updates its own historical personal worst according to \eqref{eq:pworst_update_defeatist}.
+The only point of variation among particles lies in their specific behavior encoded in the velocity update equation. The precise form of this update depends on the role or roles assigned to each particle, governing how the cognitive and social components are calculated and how attraction or avoidance of best and worst landmarks is combined in each multi-hybrid approach. 
+
+\enlargethispage{\baselineskip}
+In order to express a generalized velocity update rule, let us first define two disjoint sets of behavioral roles that govern the cognitive and social components of the update equation, respectively:
+\begin{align}
+{R}_\text{cog} &= \{\texttt{rejector}, \texttt{defeatist}, \texttt{escapist}, \texttt{std}_\text{cog}\}\\
+{R}_\text{soc} &= \{\texttt{rebel}, \texttt{contrarian}, \texttt{eschewer}, \texttt{std}_\text{soc}\}
+\end{align}
+Each role is associated with a corresponding velocity update component. Here, $\texttt{std}_\text{cog}$ and $\texttt{std}_\text{soc}$ denote the standard cognitive and social roles, defined by the canonical components in \eqref{eq:std_cog_component} and \eqref{eq:std_soc_component}, respectively. The remaining roles can likewise be linked to their respective velocity update component equations terms. It may be done via an explicit identity relation, which would unify notation and allows later modular composition. One should keep in mind, however, that a particle, its assigned role, and a velocity update equation component are neither arithmetically nor logically equivalent. Ultimately, this identity may be treated  as a dictionary key-value pair that will be decoded in general formulation. Concretely, for the $i$-th particle and dimension  $j$, the non-standard behavioral components are defined as:
+% Each role is assosiated with its corresponding velocity update equation component. $\texttt{std}_\text{cog}$ and $\texttt{std}_\text{soc}$ stands for standard particle roles:cognitive and social, respectively, and---following this considerations, standard cognitive and social velocity update equation components as they defined by \eqref{eq:std_cog_component} and \eqref{eq:std_soc_component}. Going further along this line, we may tie the remaining roles with their respective components. We may do it with identity relation, for consistency, as it should not be the obstacle later on. So, for an $i$-th particle in any dimension $j$:
+% \begin{align}
+%     \texttt{rebel} & =  c_3 r_3 (x_{i}^{j} - b_{g}^{j}), \\
+%     \texttt{rejector} & =   c_4 r_4 (x_{i}^{j} - b_{i}^{j}), \\
+%     \texttt{contrarian} & =  c_5 r_5 (w_{g}^{j} - x_{i}^{j}), \\
+%     \texttt{defeatist} & =  c_6 r_6 (w_{i}^{j} - x_{i}^{j}), \\
+%     \texttt{eschewer} & =  c_7 r_7 (x_{i}^{j} - w_{g}^{j}), \\
+%     \texttt{escapist} & =  c_8 r_8 (x_{i}^{j} - w_{i}^{j}),
+% \end{align}
+\begin{equation}
+\Phi(r) := 
+\begin{cases}
+c_1\, r_1\, (b_i - x_i) 
+    & \text{if } r = \texttt{std}_\text{cog}, \\
+c_2\, r_2\, (b_g - x_i) 
+    & \text{if } r = \texttt{std}_\text{soc}, \\
+c_3\, r_3\, (x_i - b_g) 
+    & \text{if } r = \texttt{rebel}, \\
+c_4\, r_4\, (x_i - b_i) 
+    & \text{if } r = \texttt{rejector}, \\
+c_5\, r_5\, (w_g - x_i) 
+    & \text{if } r = \texttt{contrarian}, \\
+c_6\, r_6\, (w_i - x_i) 
+    & \text{if } r = \texttt{defeatist}, \\
+c_7\, r_7\, (x_i - w_g) 
+    & \text{if } r = \texttt{eschewer}, \\
+c_8\, r_8\, (x_i - w_i) 
+    & \text{if } r = \texttt{escapist}.
+\end{cases}
+\end{equation}
+where $c_3$ - $c_8$ are respective acceleration coefficients that scales the force of attraction or repulsion in a respective component. $r_3$ - $r_8$ are independent random numbers drawn uniformly from [0,1]. $b_{g}$ and $w_{g}$ stand for global best and global worst position, respectively, while $b_{i}$ and $w_{i}$ are $i$-th particle personal best and worst position, respectively. This consistent role-component mapping allows each particle’s velocity to be flexibly constructed as a sum of its selected cognitive and social terms, according to its assigned roles. Finally, \(\Phi\) formally specifies the function that maps any role \( r \in R_\text{cog} \cup R_\text{soc} \) of the \( i \)-th particle to its corresponding  velocity update component.
+
+
+
+
+
+
+This consistent role--component mapping allows each particle’s velocity to be flexibly constructed as the sum of its selected cognitive and social terms, according to its assigned roles. For instance, standard PSO's velocity update equation \eqref{eq:velocity_update} can be equivalently reformulated in the terms of $\Phi$ as:
+\begin{equation}\label{eq:velocity_update_reformulated}
+    v_{i}^{j}{}' = \Phi(\texttt{std}_\text{cog}) +  \Phi(\texttt{std}_\text{soc}).
+\end{equation}
+With this full mapping defined, a general rule can be stated: in all multi-hybrid variants, the velocity update for each particle can be expressed in the unified form:
+\begin{equation}\label{eq:velocity_update_universal}
+    v_{i}^{j}{}' = \omega v_{i}^{j} + \sum_{r \in A_i} \Phi(r),
+\quad 
+A_i \subseteq R_\text{cog} \cup R_\text{soc},
+\end{equation}
+where $A_i$ is a non-empty set of active roles assigned to the $i$-th particle.
+The specific construction of $A_i$ depends on the hybridization scheme and is formally defined in the subsections that follow.
+
+
+There is one major difference between the multi-hybrid approach described in this section and all the other diversity-enhancing strategies presented earlier. In all previously described algorithms, roles were assigned once during the initialization phase and remained fixed throughout the run. In contrast, the multi-hybrid designs expand the design space for PSO by systematically mixing attraction and avoidance forces within both the cognitive and social components and by dynamically reassigning roles at every iteration. This means that each particle may assume one role or a set of roles in one iteration and a completely different configuration in the next. In fact, static-role versions of these algorithms were also tested during initial parameter tuning, but consistently performed worse than their dynamic counterparts.
+
+
+
+
+\subsection{HybridFullDisjointPSO}
+
+
+HybridFullDisjointPSO is one of the paradigms within the family of multi-hybrid strategies for diversity enhancement in PSO.
+This variant represents the class of disjoint-role hybrids, in which different specialized behaviors (e.g., contrarian, defeatist, eschewer, escapist) are assigned to disjoint subgroups of particles. Each particle may have at most one special role or remain entirely standard. This strictly disjoint role assignment scheme ensures that each particle expresses at most one special behavior at a time, thereby simplifying interpretability and avoiding overly complex interactions. Specifically, each particle is categorized as one of the following: standard (standard cognitive and standard social behavior),  special cognitive (one special cognitive role paired with standard social behavior), special social (one special social role paired with standard cognitive behavior).
+
+
+% HybridFullDisjointPSO is one of the paradigm within multi-hybrid strategies of diversity-enhancing for PSO.
+% Disjoint-role hybrids (HybridFullDisjointPSO), where different roles (e.g., contrarian, defeatist, eschewer, escapist) are assigned to disjoint subgroups of particles. Each particle can have a single role, either special or standard
+% HybridFullDisjointPSO uses a strictly disjoint role assignment scheme to ensure that each particle has at most one special behavior, simplifying interpretability and avoiding overcomplicated interactions. Specifically, each particle is categorized as: standard (standard cognitive and standard social behavior),  special cognitive (one special cognitive role paired with standard social behavior), special social (one special social role paired with standard cognitive behavior)
+
+For the full-disjoint case, $A_i$  must be the union of exactly one cognitive role and one social role, constrained to valid pairings by the domain
+\begin{equation}\label{eq:fulldisjoint_roles}
+    A_i = \{ r_\text{cog},\; r_\text{soc} \}\text{ where }(r_\text{cog}, r_\text{soc}) \in (R_\text{cog} \times \{\texttt{std}_\text{soc}\}) \cup (\{\texttt{std}_\text{cog}\} \times R_\text{soc}) 
+\end{equation}
+$A_i$ effectively defines a set of roles that any particle within the algorithm can take, but---more importantly---it is then substituted to a universal velocity update rule \eqref{eq:velocity_update_universal}.
+In consequence, any in HybridFullDisjointPSO particle's velocity update equation must match either \eqref{eq:velocity_update}, \eqref{eq:velocity_update_rebel}, \eqref{eq:velocity_update_rejector}, \eqref{eq:velocity_update_contrarian}, \eqref{eq:velocity_update_defeatist}, \eqref{eq:velocity_update_eschewer} or \eqref{eq:velocity_update_escapist}, and any no other velocity components combinations are permitted in this scheme. 
+
+The ultimate role assignment in HybridFullDisjointPSO is governed by \eqref{eq:fulldisjoint_roles} in conjunction with the user-specified role fractions. Unlike earlier strategies, this assignment does not occur only at the initialization phase but is performed dynamically within the main iteration loop---it is, in fact, the first operation executed at each iteration step.
+All other aspects of the algorithm — such as boundary handling, termination criteria, fitness evaluation, and the standard position update---remain identical to those in the canonical PSO or any other diversity-enhancing variant described earlier.
+Despite its apparent complexity, the flow of HybridFullDisjointPSO, as depicted in Algorithm~\ref{alg:hybridfulldisjoint}, is conceptually straightforward and follows the familiar PSO structure.
+
+% \enlargethispage{.6\baselineskip}
+\vspace{.935em}
+\begin{algorithm}[H]
+\caption{HybridFullDisjointPSO}\label{alg:hybridfulldisjoint}
+\KwIn{
+Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients \(c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8\),  special role fractions: \(\rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
+}
+\KwOut{Best solution found}
+Initialize a population of \(N\) particles with random positions and velocities\;  
+Evaluate the fitness of each particle\;  
+Set global best \(\vec{b}_g\) and global worst \(\vec{w}_g\) positions; for each particle, set personal best \(\vec{b}_i\) and personal worst \(\vec{w}_i\) positions\;  
+\While{termination criterion is not met}{
+    Assign roles to particles according to the specified fractions and \eqref{eq:fulldisjoint_roles}\;
+    Update particle's velocity according to rule \eqref{eq:velocity_update_universal} constrained by \eqref{eq:fulldisjoint_roles} \; 
+    Update particle's position according to \eqref{eq:position_update}\;  
+    Evaluate the fitness of each particle\;  
+    Update the personal best \(\vec{b}_i\), personal worst \(\vec{w}_i\), global best \(\vec{b}_g\), and global worst \(\vec{w}_g\) positions if necessary\;  
+}
+\Return The global best position \(\vec{b}_g\) as the final solution \;
+\end{algorithm}
+
+
+
+The user specifies fractions for each special role, subject to the constraint that \(\rho_3 + \rho_4 + \rho_5 + \rho_6 + \rho_7 + \rho_8 \leq 1\). In practice, this sum is often strictly less than one, with the residual fraction implicitly defining the share of particles that retain the fully standard behavior. During each velocity update, a particle applies its assigned special component where applicable and defaults to the standard component for the other term.
+
+
+\subsection{HybridPartialDisjointPSO}
+
+
+HybridPartialDisjointPSO forms the second paradigm within the family of multi-hybrid strategies for diversity enhancement in PSO. In this variant, each particle may simultaneously assume a distinct role for each velocity update component---one cognitive and one social---resulting in mixed-force behavior within the same particle.
+
+HybridPartialDisjointPSO implements a partial disjoint role assignment strategy. Concretely, each particle is explicitly assigned one cognitive role and one social role, with these assignments being statistically independent. The cognitive role governs how the particle incorporates its personal search history, while the social role dictates how it responds to collective swarm landmarks.
+
+Formally, the set of active role for each particle satisfies:
+\begin{equation}\label{eq:partialdisjoint_roles}
+A_i = \{ r_\text{cog},\; r_\text{soc} \}
+\quad \text{where} \quad
+(r_\text{cog}, r_\text{soc}) \in R_\text{cog} \times R_\text{soc}.
+\end{equation}
+Roles are initially sampled according to user-defined fractions for each cognitive and social role type. By construction, this independent pairing allows each particle’s search behavior to emerge from any valid combination of a cognitive and a social component type. To promote continuous adaptation, roles are re-sampled at each iteration.
+
+
+
+\enlargethispage{.2\baselineskip}
+
+\vspace{.935em}
+\begin{algorithm}[H]
+\caption{HybridPartialDisjointPSO}\label{alg:hybridpartialdisjoint}
+\KwIn{
+Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients \(c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8\),  special role fractions: \(\rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
+}
+\KwOut{Best solution found}
+Initialize a population of \(N\) particles with random positions and velocities\;  
+Evaluate the fitness of each particle\;  
+Set global best \(\vec{b}_g\) and global worst \(\vec{w}_g\) positions; for each particle, set personal best \(\vec{b}_i\) and personal worst \(\vec{w}_i\) positions\;  
+\While{termination criterion is not met}{
+    Assign roles to particles according to the specified fractions and \eqref{eq:partialdisjoint_roles}\;
+    Update particle's velocity according to rule \eqref{eq:velocity_update_universal} constrained by \eqref{eq:partialdisjoint_roles} \; 
+    Update particle's position according to \eqref{eq:position_update}\;  
+    Evaluate the fitness of each particle\;  
+    Update the personal best \(\vec{b}_i\), personal worst \(\vec{w}_i\), global best \(\vec{b}_g\), and global worst \(\vec{w}_g\) positions if necessary\;  
+}
+\Return The global best position \(\vec{b}_g\) as the final solution \;
+\end{algorithm}
+
+The total fraction of special cognitive roles (rejector, defeatist, escapist) must not exceed one; the same constraint applies independently to the total fraction of special social roles (rebel, contrarian, eschewer), \(\rho_3 + \rho_5 +  \rho_7 \leq 1 \geq \rho_4 + \rho_6 + \rho_8\). In practice, these sums are typically smaller than one, ensuring that some particles remain fully standard by default, or one of the canonical velocity update component, thereby preserving representation of a baseline canonical PSO behavior within the swarm.
+
+
+\subsection{HybridAdditivePSO}
+
+
+HybridAdditivePSO represent the most general paradigm within the family of multi-hybrid strategies for diversity enhancement in PSO. Unlike the disjoint-role hybrids, this variant allows each particle to activate multiple behavioral components simultaneously within both the cognitive and social parts of the velocity update. As a result, each particle’s motion can express a weighted blend of multiple attraction and repulsion forces at once.
+
+
+
+HybridAdditivePSO is then of a fully flexible hybrid, where role assignment is unconstrained, allowing any combination of diversity-enhancing actions to coexist within a single particle’s update dynamics. Instead of mutually exclusive roles, each behavioral component is modeled as a probabilistic switch that can be active or inactive for each particle in each iteration. This means that in HybridAdditivePSO, each particle activates an independent subset of special cognitive and social roles at each iteration, according to predefined probabilities. If no special roles are activated for a given component (cognitive or social) in a given iteration, the standard component is applied by default. Formally, the active role set for each particle at the iteration step is defined by:
+\begin{equation}\label{eq:additive_roles}
+A_i = A_{\text{cog}} \cup A_{\text{soc}}, 
+\quad 
+\text{where}
+\;
+\begin{cases}
+A_{\text{cog}} \in \big( \mathcal{P}(R_{\text{cog}}\setminus \{\texttt{std}_{\text{cog}}\} ) \setminus \{\emptyset\} \big) \; \cup \; \{\{\texttt{std}_{\text{cog}}\}\},\\[6pt]
+A_{\text{soc}} \in \big( \mathcal{P}(R_{\text{soc}}\setminus \{\texttt{std}_{\text{cog}}\} ) \setminus \{\emptyset\} \big) \; \cup \; \{\{\texttt{std}_{\text{soc}}\}\},
+\end{cases}
+\end{equation}
+where $\mathcal{P}(\cdot)$ denotes the power set. The only restriction is that at least one role (per cognitive/social part of the velocity update) must be active, ensuring that the particle continues to be influenced by the swarm’s collective and individual landmarks.
+
+In consequence of \eqref{eq:additive_roles}, if at least one special cognitive role is activated (by probability), then
+$
+A_{\text{cog}} = \{$all activated special cognitive roles$\}$.
+Otherwise,
+$
+A_{\text{cog}} = \{\texttt{std}_{\text{cog}}\}.
+$
+If at least one special social role is activated (by probability), then
+$
+A_{\text{soc}} = \{$all activated special social roles$\}$.
+Otherwise,
+$
+A_{\text{soc}} = \{\texttt{std}_{\text{soc}}\}.
+$
+Hence, at every iteration, a particle’s active role set is always the union of
+at least one cognitive role (either some set of special roles or the standard fallback), and
+at least one social role (either a collection of social roles or at least a standard role).
+This guarantees that the set of active roles for a particle is never empty,
+$
+A_i \neq \emptyset.
+$
+
+
+HybridAdditivePSO implements this flexible design by treating each special cognitive or social behavior as an independent, probabilistically activated influence. For each particle and at each iteration, the activation of every role is controlled by a user-specified probability. If a given role is active, its associated component contributes to the velocity update; otherwise, it does not. This enables particles to adaptively combine various behaviors in an additive manner, rather than being limited to exactly one per component. Consequently, this formulation allows any particle to express combinations of potentially competing behaviors (e.g., simultaneous attraction and repulsion to the same landmark), providing maximal flexibility.
+Role activations are re-sampled for each particle at every iteration, producing a highly dynamic and adaptive swarm that continuously reshapes its search strategy throughout the optimization process.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\vspace{.935em}
+\begin{algorithm}[H]
+\caption{HybridPartialDisjointPSO}\label{alg:hybridadditive}
+\KwIn{
+Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients \(c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8\),  special role fractions: \(\rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
+}
+\KwOut{Best solution found}
+Initialize a population of \(N\) particles with random positions and velocities\;  
+Evaluate the fitness of each particle\;  
+Set global best \(\vec{b}_g\) and global worst \(\vec{w}_g\) positions; for each particle, set personal best \(\vec{b}_i\) and personal worst \(\vec{w}_i\) positions\;  
+\While{termination criterion is not met}{
+    Assign roles to particles according to the specified fractions and \eqref{eq:additive_roles}\;
+    Update particle's velocity according to rule \eqref{eq:velocity_update_universal} constrained by \eqref{eq:additive_roles} \; 
+    Update particle's position according to \eqref{eq:position_update}\;  
+    Evaluate the fitness of each particle\;  
+    Update the personal best \(\vec{b}_i\), personal worst \(\vec{w}_i\), global best \(\vec{b}_g\), and global worst \(\vec{w}_g\) positions if necessary\;  
+}
+\Return The global best position \(\vec{b}_g\) as the final solution \;
+\end{algorithm}
+
+
+
+
+
+
+The fractions should fit into [0,1] and might understand as chance to draw, with default to standard PSO component.
+In practice, the activation probabilities are chosen such that only a moderate number of components contribute at each step. 
+
+
+
+
+
+
+% The multi-hybrid strategies formalized in this section demonstrate that PSO’s behavioral space can be rigorously extended by decoupling and recombining cognitive and social update components through controlled attraction and repulsion with respect to both optimal and suboptimal landmarks. By framing each role as an explicit velocity component and regulating their activation deterministically or probabilistically, these hybrids ensure that swarm diversity is no longer left to random perturbations alone but is driven by problem-informed structural signals. The disjoint, partial disjoint, and additive variants differ in how strictly they enforce role exclusivity, but all conform to the same universal update schema \eqref{eq:velocity_update_universal}. This guarantees that all particles simultaneously benefit from landmark-based exploitation and structured, role-induced exploration, ensuring theoretical coherence and practical flexibility within the PSO family.
+
+
+
+
 
 
 }
