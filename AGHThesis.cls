@@ -123,7 +123,7 @@
 \RequirePackage{enumitem} % Customisation of lists.
 \RequirePackage{amsmath} % Advanced mathematical expressions.
 \RequirePackage{amssymb} % Extended mathematical symbols.
-\RequirePackage[dvipsnames]{xcolor} % Extended color support.
+\RequirePackage[dvipsnames,table]{xcolor} % Extended color support.
 \RequirePackage{tcolorbox} % Creating colored and highlighted boxes.
 \RequirePackage{varwidth} % Allows variable-width boxes.
 \RequirePackage{titlesec} % Customisation of section and chapter titles.
@@ -153,6 +153,8 @@
 % \RequirePackage{indentfirst}
 \RequirePackage{mathtools}
 \RequirePackage{lipsum}
+\RequirePackage{adjustbox}
+\RequirePackage{makecell}
 \RequirePackage{tikz}
 \usetikzlibrary{arrows.meta,calc,positioning,shapes.misc}
 

@@ -73,6 +73,20 @@
     code={\ifdefempty{\tcbtitletext}{}{\tcbset{before upper={\tcbtitle\par\medskip}}}}
 }
 
+\newtcolorbox{blkblock}[1]{%
+  enhanced jigsaw,
+  frame hidden,
+  colback=white,
+  coltitle=black,
+  fonttitle=\bfseries\itshape,
+  sharp corners,
+  detach title,
+  borderline west={.85mm}{0pt}{black},
+  pad at break=1mm,
+  title={#1},
+  code={\ifdefempty{\tcbtitletext}{}{\tcbset{before upper={\tcbtitle\par\smallskip}}}}
+}
+
 % Capitalise the first letter in '\autoref' for both English and Portuguese.
 \addto\extrasenglish{\def\figureautorefname{Figure}}
 \addto\extrasenglish{\def\chapterautorefname{Chapter}}

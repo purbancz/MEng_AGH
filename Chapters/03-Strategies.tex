@@ -335,13 +335,13 @@ This is also the main reason why describing this approach via particle roles off
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_3 \cdot N\) particles as rebels\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\), for each particle set personal best position \(\vec{b}_i\)\;
     \While{Termination criterion is not met}{
         Modify each rebel particle's velocity and position by equations (\ref{eq:velocity_update_rebel}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\) and global best \(b_g\) positions if necessary\;        
+        Update the personal best \(\vec{b}_i\) and global best \(\vec{b}_g\) positions if necessary\;        
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
 
 \vspace{.935em}
@@ -450,13 +450,13 @@ $b_g$ continues to serve as a single, shared reference: both standard and reject
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_4 \cdot N\) particles as rejectors\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\), for each particle set personal best position \(\vec{b}_i\)\;
     \While{Termination criterion is not met}{
         Modify each rejector particle's velocity and position by equations (\ref{eq:velocity_update_rejector}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\) and global best \(b_g\) positions if necessary\;        
+        Update the personal best \(\vec{b}_i\) and global best \(\vec{b}_g\) positions if necessary\;        
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
 \vspace{.935em}
 
@@ -481,13 +481,13 @@ The behavioral properties of these particle groups are the same as in the case o
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_3 \cdot N\) particles as rebels and  \(\rho_4 \cdot N\) particles as rejectors\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\), for each particle set personal best position \(\vec{b}_i\)\;
     \While{Termination criterion is not met}{
         Modify each rebel particle's position and velocity by equations (\ref{eq:velocity_update_rebel}) and (\ref{eq:position_update}), each rejector particle's position and velocity by equations (\ref{eq:velocity_update_rejector}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\) and global best \(b_g\) positions if necessary\;        
+        Update the personal best \(\vec{b}_i\) and global best \(\vec{b}_g\) positions if necessary\;        
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
 \vspace{.935em}
 
@@ -638,13 +638,13 @@ In the ContrarianPSO, the swarm additionally maintains and shares information ab
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_5 \cdot N\) particles as contrarians\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\) and global worst position \(w_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\) and global worst position \(\vec{w}_g\), for each particle set personal best position \(b_i\)\;
     \While{Termination criterion is not met}{
         Modify each contrarian particle's velocity and position equations (\ref{eq:velocity_update_contrarian}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\), global best \(b_g\) and  global worst \(w_g\) positions if necessary\;
+        Update the personal best \(\vec{b}_i\), global best \(\vec{b}_g\) and  global worst \(\vec{w}_g\) positions if necessary\;
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
 
 Consistent with the design of previously defined PSO variants, ContrarianPSO introduces two dedicated parameters that govern the behavior of the contrarian subgroup.  The parameter $\rho_5$ determines the proportion of the swarm designated as contrarian particles at initialization. The parameter  $c_5$ scales the influence of the contrarian component in the velocity update equation \eqref{eq:velocity_update_contrarian}, specifically controlling the strength of attraction toward the global worst position $\vec{w}_g$. It plays a role analogous to $c_1$ and $c_2$ in standard PSO, which weight the cognitive and social terms, respectively. A higher $c_5$  increases the swarm’s emphasis on exploration through attraction to inferior regions, which in the extreme case gradually degrades the algorithm toward a global maximizer. Conversely, a lower $c_5$ maintains stronger exploitation pressure on contrarian particles around their historical best solutions, effectively reducing the framework to a personal-best-only PSO variant when 
@@ -772,15 +772,15 @@ In the DefeatistPSO, the particles additionally maintain information about their
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_6 \cdot N\) particles as defeatists\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best \(b_i\) and worst \(w_i\) positions\;
+Set global best position \(\vec{b}_g\), for each particle set personal best \(\vec{b}_i\) and worst \(\vec{w}_i\) positions\;
     \While{Termination criterion is not met}{
         Modify each defeatist particle's velocity and position equations (\ref{eq:velocity_update_defeatist}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\), personal worst \(w_i\), and global best \(b_g\) positions if necessary\;
+        Update the personal best \(\vec{b}_i\), personal worst \(\vec{w}_i\), and global best \(\vec{b}_g\) positions if necessary\;
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
-\vspace{.935em}
+\vspace{.535em}
 
 
 DefeatistPSO introduces two dedicated parameters that govern the behavior of the defeatist subgroup. The parameter  $c_6$ scales the influence of the defeatist component in the velocity update equation \eqref{eq:velocity_update_defeatist}, specifically controlling the strength of attraction of each defeatist particle toward its personal worst position $\vec{w}_i$. Higher values of $c_6$ increase this pull, encouraging more aggressive exploration of inferior regions, while lower values weaken this tendency.
@@ -936,21 +936,36 @@ $\omega$ is the inertia weight, $c_1$ and $r_1$ govern the cognitive component, 
 
 The formal characteristics of this algorithm are the same as in the case of ContrarianPSO (\ref{eq:negative_pso}--\ref{eq:particle_negative}). The flow of the algorithm, depicted in the scheme of Algorithm \ref{alg:eschewer} below, as well as the considerations concerning the newly introduced dedicated parameters, are likewise identical, \textit{mutatis mutandis}.
 
-\vspace{.535em}
+\enlargethispage{.1\baselineskip}
+\vspace{.335em}
 \begin{algorithm}[H]
 \caption{EshewerPSO}\label{alg:eschewer}
 \KwIn{Swarm size \(N\), inertia weight \(w\), acceleration coefficients \(c_1\), \(c_2\), \(c_7\), contrarian fraction \(\rho_7\)}
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_7 \cdot N\) particles as eshewers\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\) and global worst position \(w_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\) and global worst position \(vec{w}_g\), for each particle set personal best position \(b_i\)\;
     \While{Termination criterion is not met}{
         Modify each eshewer particle's velocity and position equations (\ref{eq:velocity_update_eschewer}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\), global best \(b_g\) and  global worst \(w_g\) positions if necessary\;
+        Update the personal best \(\vec{b}_i\), global best \(\vec{b}_g\) and  global worst \(vec{w}_g\) positions if necessary\;
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
+% \begin{algorithm}[H]
+% \caption{EschewerPSO}\label{alg:eschewer}
+% \KwIn{Swarm size \(N\), inertia weight \(\omega\), acceleration coefficients \(c_1\), \(c_2\), \(c_7\), eschewer fraction \(\rho_7\)}
+% \KwOut{Best solution found}
+% Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_7 \cdot N\) particles as eschewers\;
+% Evaluate the fitness of each particle\;
+% Set global best position \(\vec{b}_g\) and global worst position \(\vec{w}_g\); for each particle, set personal best position \(\vec{b}_i\)\;
+% \While{termination criterion is not met}{
+%     Modify each echewer particle's velocity and position according to equations \eqref{eq:velocity_update_eschewer} and \eqref{eq:position_update} and all other particles by equations \eqref{eq:velocity_update} and \eqref{eq:position_update}\;
+%     Evaluate the fitness of each particle\;
+%     Update the personal best \(\vec{b}_i\), global best \(\vec{b}_g\), and global worst \(\vec{w}_g\) positions if necessary\;
+% }
+% \Return The global best position \(\vec{b}_g\) as the final solution\;
+% \end{algorithm}
 
 
 
@@ -1049,20 +1064,34 @@ $c_8$ is the escapist acceleration coefficient, which controls the strength of r
 
 Escapist particles also update their personal worst positions according to equation \eqref{eq:pworst_update_defeatist}. In all other respects—including the formal structure, algorithmic flow, and parameter selection—this strategy closely resembles DefeatistPSO, \textit{mutatis mutandis}.
 
-\vspace{.935em}
+\vspace{.535em}
+% \begin{algorithm}[H]
+% \caption{EscapistPSO}\label{alg:escapist}
+% \KwIn{Swarm size \(N\), inertia weight \(w\), acceleration coefficients \(c_1\), \(c_2\), \(c_8\), escapist fraction \(\rho_8\)}
+% \KwOut{Best solution found}
+% Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_8 \cdot N\) particles as escapists\;
+% Evaluate the fitness of each particle\;
+% Set global best position \(b_g\), for each particle set personal best \(b_i\) and worst \(w_i\) positions\;
+%     \While{Termination criterion is not met}{
+%         Modify each escapist particle's velocity and position equations (\ref{eq:velocity_update_escapist}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
+%         Evaluate the fitness of each particle\;
+%         Update the personal best \(b_i\), personal worst \(w_i\), and global best \(b_g\) positions if necessary\;
+%     }
+% \Return The global best position \(b_g\) as the final solution\;
+% \end{algorithm}
 \begin{algorithm}[H]
 \caption{EscapistPSO}\label{alg:escapist}
-\KwIn{Swarm size \(N\), inertia weight \(w\), acceleration coefficients \(c_1\), \(c_2\), \(c_8\), escapist fraction \(\rho_8\)}
+\KwIn{Swarm size \(N\), inertia weight \(\omega\), acceleration coefficients \(c_1\), \(c_2\), \(c_8\), escapist fraction \(\rho_8\)}
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities. Tag \(\rho_8 \cdot N\) particles as escapists\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best \(b_i\) and worst \(w_i\) positions\;
-    \While{Termination criterion is not met}{
-        Modify each escapist particle's velocity and position equations (\ref{eq:velocity_update_escapist}) and (\ref{eq:position_update}) and all other particles by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
-        Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\), personal worst \(w_i\), and global best \(b_g\) positions if necessary\;
-    }
-\Return The global best position \(b_g\) as the final solution\;
+Set global best position \(\vec{b}_g\); for each particle, set personal best \(\vec{b}_i\) and worst \(\vec{w}_i\) positions\;
+\While{termination criterion is not met}{
+    Modify each escapist particle's velocity and position according to equations \eqref{eq:velocity_update_escapist} and \eqref{eq:position_update} and all other particles by equations \eqref{eq:velocity_update} and \eqref{eq:position_update}\;
+    Evaluate the fitness of each particle\;
+    Update the personal best \(\vec{b}_i\), personal worst \(\vec{w}_i\), and global best \(\vec{b}_g\) positions if necessary\;
+}
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
 
 
@@ -1270,7 +1299,7 @@ Despite its apparent complexity, the flow of HybridFullDisjointPSO, as depicted 
 \begin{algorithm}[H]
 \caption{HybridFullDisjointPSO}\label{alg:hybridfulldisjoint}
 \KwIn{
-Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients \(c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8\),  special role fractions: \(\rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
+Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients $c_1$, $c_2$, $c_3$, $c_4$, $c_5$, $c_6$, $c_7$, $c_8$,  special role fractions: $\rho_3$, $\rho_4$, $\rho_5$, $\rho_6$, $\rho_7$, $\rho_8$
 }
 \KwOut{Best solution found}
 Initialize a population of \(N\) particles with random positions and velocities\;  
@@ -1404,7 +1433,7 @@ Role activations are re-sampled for each particle at every iteration, producing 
 \begin{algorithm}[H]
 \caption{HybridPartialDisjointPSO}\label{alg:hybridadditive}
 \KwIn{
-Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients \(c_1, c_2, c_3, c_4, c_5, c_6, c_7, c_8\),  special role fractions: \(\rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
+Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients $c_1$, $c_2$, $c_3$, $c_4$, $c_5$, $c_6$, $c_7$, $c_8$,  role fractions: \(\rho_1, \rho_2, \rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
 }
 \KwOut{Best solution found}
 Initialize a population of \(N\) particles with random positions and velocities\;  
@@ -1419,14 +1448,15 @@ Set global best \(\vec{b}_g\) and global worst \(\vec{w}_g\) positions; for each
 }
 \Return The global best position \(\vec{b}_g\) as the final solution \;
 \end{algorithm}
+\vspace{.935em}
 
 
 
 
+The particle role probabilities must lie within the interval [0,1] and can be interpreted as the chance of activating each corresponding component at a given iteration. The algorithm also draws the standard cognitive and social roles explicitly; however, due to the stochastic nature of this sampling, a built-in fallback ensures that if no special or standard role is selected for a component, the standard PSO term is automatically applied. This guarantees that the particle’s velocity update remains well-defined and prevents particle from being left without an update direction.
 
+% The special role fractions should fit into [0,1] and might understand as chance to draw, with default to standard PSO component. The algorithm draws also the standard ''role'', however, since the drawing is a random method, each role is defaulting to standard in case nothing is drawn anyway.
 
-The fractions should fit into [0,1] and might understand as chance to draw, with default to standard PSO component.
-In practice, the activation probabilities are chosen such that only a moderate number of components contribute at each step. 
 
 
 
