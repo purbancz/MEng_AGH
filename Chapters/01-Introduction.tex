@@ -6,13 +6,28 @@
 
 
 
-The goal of the thesis is twofold: 
+Swarm intelligence algorithms form a major class of nature-inspired metaheuristics for solving complex optimization problems. Among these, well-known exemplars include Particle Swarm Optimization (PSO), Ant Colony Optimization (ACO), Artificial Bee Colony (ABC), Firefly Algorithm (FA), and Cuckoo Search (CS) \citep[see,][]{kennedy1995particle,dorigo1999aco,karaboga2005abc,yang2009firefly,yang2009cuckoo}. Of these, PSO stands out as both the earliest and arguably the most widely studied and practically applied, owing to its simplicity, intuitive design, and competitive performance across diverse problem domains. In this work, PSO serves as the foundational framework upon which all proposed extensions are developed and tested. A~comprehensive overview of canonical PSO is provided in \autoref{cp:pso}.
+
+Despite its popularity, standard PSO is well-known for a critical limitation: a tendency to converge prematurely, often becoming trapped in local optima, especially in high-dimensional or multimodal search spaces. Numerous enhancements have been introduced to address this shortcoming, such as hybridization with genetic operators, various random perturbation schemes, reinitialization strategies, and dynamically adaptive parameters. This thesis contributes to this extensive line of research by proposing a coherent family of informed diversity mechanisms---strategies that inject purposeful diversity into the swarm based on problem-specific information, rather than relying solely on random perturbations.
+Its main objective is twofold:
 \begin{enumerate}
-    \item To investigate various methods to enhance the exploration capabilities and population diversity of Particle Swarm Optimization (PSO).
-    \item To design, implement, and evaluate the hybridization of such strategies that effectively address these limitations, ultimately improving PSO’s performance on complex optimization problems.
+\item To design and investigate a range of informed mechanisms for enhancing the exploration capability and maintaining population diversity in Particle Swarm Optimization.
+\item To implement, hybridize, and empirically evaluate these strategies, demonstrating their effectiveness in overcoming the inherent limitations of standard PSO when applied to complex, high-dimensional benchmark problems.
 \end{enumerate}
 
 
+
+Unlike many earlier extensions that rely on uninformed randomness to scatter particles, the methods proposed in \autoref{cp:strategies} systematically exploit known positional landmarks within the swarm---specifically, the personal and global bests and worsts---combined with attraction and repulsion forces applied in both the cognitive and social components of the velocity update. Building on this idea, three fundamental behavioral categories are formulated: strategies that repel particles from the best-known positions (opposing-best or repulsion strategies), strategies that deliberately attract particles towards worst-known regions (attraction-to-Worst or negative learning strategies), and strategies that repel particles from the worst positions (opposing-worst or reverse learning strategies). 
+This framework permits the construction of both: targeted single-role algorithms and more sophisticated multi-role hybrids. Three multi-hybrid paradigms are developed:
+\begin{enumerate}
+    \item Disjoint-role hybrids (HybridFullDisjointPSO): assigns distinct roles to fully separate sub-swarms within the overall population.
+    \item Component-specific hybrids (HybridPartialDisjointPSO): allows each particle to adopt different roles for its social and cognitive components, enabling mixed-force dynamics within a single trajectory.
+    \item Fully flexible hybrids (HybridAdditivePSO): implements probabilistic, unconstrained combinations of all available roles within each particle’s update rule.
+\end{enumerate}
+These hybrids integrate the core behavioral strategies within a uniform algorithmic structure, where a defined fraction of the swarm adopts specific roles, modifying either the social or cognitive velocity term accordingly. This controlled experimental design enables a clear, fair comparison of various informed diversity techniques under consistent conditions.
+
+The proposed algorithms are empirically validated on an extensive suite of benchmark functions encompassing a variety of landscape complexities (separable, non-separable, rotated, shifted, unimodal, multimodal) and dimensionalities up to 1000 variables. Details of the experimental design, parameter tuning, and evaluation criteria are presented in \autoref{cp:experiment}.
+The results demonstrate that the multi-hybrid strategies consistently outperform standard PSO and simpler perturbation-based extensions, with single-role variants occasionally matching or exceeding the hybrids on certain landscapes with specific structural features.
 
 
 
