@@ -195,13 +195,13 @@ Upon completion, the global best position discovered by any particle during the 
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\), for each particle set personal best position \(\vec{b}_i\)\;
     \While{Termination criterion is not met}{
         Modify each particle's position and velocity by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\) and global best \(b_g\) positions if necessary\;        
+        Update the personal best \(\vec{b}_i\) and global best \(\vec{b}_g\) positions if necessary\;        
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
 
 \vspace{.935em}
@@ -247,7 +247,7 @@ Inertia refers to the contribution of a particle's previous velocity to its curr
 Historically, in the earliest implementations of PSO, the primary mechanism to control unstable, oscillating, and divergent particle trajectories and prevent velocities from ``exploding'' to large values was velocity clamping. This involved setting an upper bound ($v_{\text{max}}$) for the velocity components. If a particle's velocity exceeded this maximum in any dimension, it was simply truncated to $v_{\text{max}}$. Although velocity clamping helped limit excessive movement and supported global exploration, it introduced several challenges. The optimal value o $v_{\text{max}}$ was highly problem-dependent and difficult to tune. Moreover, clamping did not guarantee convergence, and often led to particles bouncing along or becoming clipped to the boundaries of the \gls{search-space}.
 
 To address these limitations, the \textit{inertia weight}, $\omega$, was introduced by \citeauthor{shi1998modified} \parencite*{shi1998modified,shi1999empirical}. This parameter directly scales the contribution of the particle's previous velocity to its current velocity update. It governs how much of the particle's current velocity is retained in the next iteration. Intuitively, higher inertia weight values promote exploration by allowing particles to move more freely across the \gls{search-space}. However, if too large, it can cause the swarm to diverge or overshoot optimal solutions.
-Lower values  enhances exploitation by reducing the particle's acceleration, allowing for finer, local searches around promising areas.  Extremely low values can limit the swarm's exploration ability, leading to premature convergence or stagnation in local optima.
+Lower values  enhances exploitation by reducing the particle's acceleration, allowing for finer, local searches around promising areas.  Extremely low values can limit the swarm's exploration ability, leading to premature convergence or stagnation in local minima.
 
 \citet{clerc2002particle} introduced the constriction coefficient $\chi$ as an alternative to the inertia weight, also aimed at controlling swarm dynamics and ensuring convergence. Although their formulations differ, a PSO with a constriction coefficient is algebraically equivalent to a PSO with an inertia weight. This means that, properly tuned, both approaches can achieve similar performance and guarantee convergence without the need for arbitrary $v_{\text{max}}$ clamping. Despite their theoretical equivalence, the inertia-weight formulation has become the more widely adopted approach in the literature and remains the standard in most contemporary PSO implementations.
 
@@ -317,7 +317,7 @@ The value of $c_1$ and $c_2$ critically influences the balance between explorati
 \end{itemize}
 One should keep in mind that, as with the inertia weight, poor initialization of $c_1$ and $c_2$ may also lead to divergent and oscillatory behavior of the swarm \citep[][]{engelbrecht2007computational}. Further discussion, comparative analysis and extensions of social-only and cognitive-only models can be found in \citep[][]{kennedy1997particle,brits2002niching,liu2019hierarchical,chen2025multi}.
 
-In most PSO implementations, the acceleration coefficients are typically maintained at constant values throughout the optimization process. This convention also followed in the present study. Nonetheless, several alternative strategies  have been proposed in the literature.
+In most PSO implementations, the acceleration coefficients are typically maintained at constant values throughout the optimization process. This convention is also followed in the present study. Nonetheless, several alternative strategies  have been proposed in the literature.
 % These include dynamically adjusting one or both coefficients during the run \citep[e.g.,][]{ratnaweera2002pso,watanabe2024nonlinear,tian2024improved}, adapting them to the current state of the swarm
 % \citep[e.g.,][]{zhan2007adaptive,wang2011selfadaptive,wang2018hybrid,bonthagorla2025fast}, or binding one to the other via a functional relationship \citep[e.g.,][]{cleghorn2022particle,yin2023reinforcement}.
 These include schemes that dynamically adjust the coefficients during the optimization run \citep[e.g.,][]{ratnaweera2002pso,watanabe2024nonlinear,tian2024improved}, approaches that adapt the coefficients based on the swarm's current state or performance indicators \citep[e.g.,][]{zhan2007adaptive,wang2011selfadaptive,wang2018hybrid,bonthagorla2025fast},
@@ -499,7 +499,7 @@ Shortly after the original formulation of PSO, its binary variant was introduced
 PSO was also adapted to multi-objective optimization, giving rise to a family of MOPSO \glspl{metaheuristic} designed to approximate Pareto-optimal fronts for problems with conflicting objectives \citep{alvarezbenitez2005mopso, nebro2009smpsomcdm, shao2025improved}.
 
 
-Even though the experiments presented in \autoref{cp:experiment} of this study focus primarily on the set of selected complex, single-objective, real-valued benchmark problems—spanning unconstrained, multivariate, non-linear, unimodal and multimodal, as well as differentiable and non-differentiable scenarios---the literature offers numerous examples of PSO being applied to real-world optimization tasks. Due to its versatility and effectiveness across diverse problem types, PSO has found successful application in a wide range of fields, including
+Even though the experiments presented in \autoref{cp:experiment} of this study focus primarily on the set of selected complex, single-objective, continuous benchmark problems—spanning unconstrained, multivariate, non-linear, unimodal and multimodal, as well as differentiable and non-differentiable scenarios---the literature offers numerous examples of PSO being applied to real-world optimization tasks. Due to its versatility and effectiveness across diverse problem types, PSO has found successful application in a wide range of fields, including
 electrical and electronic engineering \citep[e.g.,][]{jin2024improved, salvatierra2024pso, dibya2025optimized},
 automation and control systems \citep[e.g.,][]{duan2024using,urgan2024pso,gil2024platooning}, 
 communication theory \citep[e.g.,][]{qiao2025resource,jin2024overview,jin2025design}, 
@@ -533,7 +533,7 @@ the inability to adapt to dynamic and noisy cases,
 and the lack of a native mechanism for handling constraints
 \citep[see,][]{abualigah2025particle},
 but
-one of the most significant shortcomings of PSO is its tendency towards premature convergence and stagnation in local optima. Premature convergence occurs when the swarm settles on a suboptimal solution before thoroughly exploring the entire \gls{search-space}. This issue is particularly pronounced in multimodal optimization problems, which feature multiple local minima, making it challenging for the swarm to escape local attraction basins and locate the true global optimum. The core of this problem lies in the inherent dynamics of PSO: when a particle's current position, its personal best, and the global best positions coincide, the velocity update equation can cause the particle's velocity to diminish to zero. This leads to a stagnant state where particles cease movement, even if the converged point is not a local or global minimum.
+one of the most significant shortcomings of PSO is its tendency towards premature convergence and stagnation in local minima. Premature convergence occurs when the swarm settles on a suboptimal solution before thoroughly exploring the entire \gls{search-space}. This issue is particularly pronounced in multimodal \glspl{optimization-problem}, which feature multiple local minima, making it challenging for the swarm to escape local attraction basins and locate the true global optimum. The core of this problem lies in the inherent dynamics of PSO: when a particle's current position, its personal best, and the global best positions coincide, the velocity update equation can cause the particle's velocity to diminish to zero. This leads to a stagnant state where particles cease movement, even if the converged point is not a local or global minimum.
 
 Moreover, PSO's ability to refine solutions in the late stages of the search rapidly diminish. As particles approach the equilibrium spot, their step sizes tend to decrease, and velocities can become very small, making further significant progress difficult. The traditional PSO lacks dynamically adjustable mechanisms to balance exploration and exploitation effectively just after initial stages, which can hinder the ultimate accuracy of the found solution or prolong the convergence time unnecessarily.
 

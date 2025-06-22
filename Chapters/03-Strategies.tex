@@ -6,7 +6,7 @@
 
 
 In the previous chapter, the classical version of Particle Swarm Optimization (PSO) was reviewed.
-It has certainly gained significant acclaim as a powerful \gls{metaheuristic} algorithm, largely attributed to its simplicity, inherent efficiency, and ease of implementation and adaptation for a wide array of \glspl{optimization-problem}. Mimicking the collective intelligence observed in bird flocks and fish schools, canonical PSO guides its particles---representing potential solutions---through a \gls{search-space} by continually adjusting their trajectories based on individual historical bests and the global best found by the entire swarm. However, despite these foundational strengths, traditional PSO is notoriously prone to premature convergence and stagnation in local optima, particularly when faced with complex, multimodal, or high-dimensional problems. These critical drawbacks fundamentally stem from the algorithm's limited exploration capability and a rapid decline in population diversity, where particles tend to cluster too quickly around sub-optimal solutions.
+It has certainly gained significant acclaim as a powerful \gls{metaheuristic} algorithm, largely attributed to its simplicity, inherent efficiency, and ease of implementation and adaptation for a wide array of \glspl{optimization-problem}. Mimicking the collective intelligence observed in bird flocks and fish schools, canonical PSO guides its particles---representing potential solutions---through a \gls{search-space} by continually adjusting their trajectories based on individual historical bests and the global best found by the entire swarm. However, despite these foundational strengths, traditional PSO is notoriously prone to premature convergence and stagnation in local minima, particularly when faced with complex, multimodal, or high-dimensional problems. These critical drawbacks fundamentally stem from the algorithm's limited exploration capability and a rapid decline in population diversity, where particles tend to cluster too quickly around sub-optimal solutions.
 To effectively address these persistent limitations and achieve a better balance between global exploration and local exploitation---a crucial aspect for successful optimization---researchers have extensively developed a myriad of novel approaches: modifications, enhancements, variants and hybridizations of the canonical PSO algorithm.
 
 This chapter offers two complementary families of PSO enhancements that aim to directly address these issues.
@@ -28,7 +28,7 @@ the perturbation strategy is a prominent member of the diversity-enhancing metho
 Several distinct approaches to perturbation have been proposed, drawing inspiration from various computational intelligence paradigms.
 It is worth noting that this injection of controlled randomness closely resembles the mutation operators employed in classical evolutionary algorithms such as Genetic Algorithms (GA) and Differential Evolution (DE).
 In consequence, PSO–GA hybrids and similar combinations can be viewed as perturbation-based strategies. 
-Mutation operators, in general, are critical means for preventing the loss of diversity within a population of solutions, thereby exploring a greater region of the search space.
+Mutation operators, in general, are critical means for preventing the loss of diversity within a population of solutions, thereby exploring a greater region of the \gls{search-space}.
 
 Inspired by evolutionary algorithms, the incorporation of mutation operators from GAs into PSO has become one of the oldest and most common perturbation technique.
 \citet{higashi2003gaussian} were among the first to incorporate evolutionary mutation into PSO. Their method integrates traditional velocity and position update rules with Gaussian mutation and was shown to outperform both canonical PSO and standard GA on a range of unimodal and multimodal benchmark functions, as well as in real-world tasks such as gene network inference.
@@ -150,8 +150,7 @@ Both Gaussian and Cauchy distributions were evaluated during preliminary paramet
 
 All other aspects of PerturbationPSO—including the initialization strategy, the velocity update rule, the personal best and global best updates, and any boundary handling pro\-ce\-dures---remain identical to those of the canonical PSO algorithm. Only the final position update is augmented by the stochastic perturbation term; all other components of the algorithm are carried out exactly as in the standard formulation defined in \autoref{cp:pso}. The  detailed framework is presented on the Algortithm \ref{alg:perturbation} schema below.
 
-\vspace{.835em}
-
+\vspace{.635em}
 \begin{algorithm}[H]
 % \caption{Particle Swarm Optimization (PSO)}
 \caption{PerturbationPSO}\label{alg:perturbation}
@@ -159,16 +158,15 @@ All other aspects of PerturbationPSO—including the initialization strategy, th
 \KwOut{Best solution found}
 Initialize population of \(N\) particles with random positions and velocities\;
 Evaluate the fitness of each particle\;
-Set global best position \(b_g\), for each particle set personal best position \(b_i\)\;
+Set global best position \(\vec{b}_g\), for each particle set personal best position \(b_i\)\;
     \While{Termination criterion is not met}{
         Modify each particle's position and velocity by equations (\ref{eq:velocity_update}) and (\ref{eq:position_update_perturbation})\;
         Evaluate the fitness of each particle\;
-        Update the personal best \(b_i\) and global best \(b_g\) positions if necessary\;        
+        Update the personal best \(\vec{b}_i\) and global best \(\vec{b}_g\) positions if necessary\;        
     }
-\Return The global best position \(b_g\) as the final solution\;
+\Return The global best position \(\vec{b}_g\) as the final solution\;
 \end{algorithm}
-
-\vspace{.835em}
+\vspace{.635em}
 
 \enlargethispage{.6\baselineskip}
 In PerturbationPSO, the $\sigma$ in the term $\epsilon_{i}^{j} \sim \mathcal{N}(0, \sigma)$ represents the standard deviation of the Gaussian noise that is added to each dimension of every particle's position after the canonical PSO updates. Intuitively, the $\sigma$ parameter effectively dictates the spread of the Gaussian noise around zero. A larger $\sigma$ will result in the generation of noise values that are, on average, further away from zero, leading to larger modifications in a particle's position. Conversely, a smaller $\sigma$ will produce noise values closer to zero, resulting in more subtle adjustments to the particle's position. Its optimal management, is key to the algorithm's effectiveness.
@@ -225,7 +223,7 @@ Drawing inspiration from ecological interactions and natural competitive relatio
 It is important to note, however, that this repulsive effect is mediated by a separate ``predator'' entity and thus indirectly pushes particles away from desirable regions, rather than directly reversing the particle's own learning vectors based on its personal or global best.
 
 
-\citet{parsopoulos2001stretching} were among the first to tackle multimodal optimization by dynamically reshaping the fitness landscape: their “stretching” technique involves adaptively modifying the fitness landscape by ``stretching'' or raising detected local optima to encourage particles to explore other regions. However, this method sometimes introduced false minima. To address this, \citet{parsopoulos2004global} developed the ``deflection and repulsion'' framework, which explicitly steers particles away from previously identified optima. By applying targeted repulsion forces at these locations, the swarm is guided toward undiscovered basins of attraction, improving the likelihood of finding global rather than local solutions.
+\citet{parsopoulos2001stretching} were among the first to tackle multimodal optimization by dynamically reshaping the fitness landscape: their stretching technique involves adaptively modifying the fitness landscape by "stretching" or "raising" detected local minima to encourage particles to explore other regions. However, this method sometimes introduced false minima. To address this, \citet{parsopoulos2004global} developed the ``deflection and repulsion'' framework, which explicitly steers particles away from previously identified optima. By applying targeted repulsion forces at these locations, the swarm is guided toward undiscovered basins of attraction, improving the likelihood of finding global rather than local solutions.
 
 
 In essence, opposing‐best PSO learning strategy deliberately reverses the velocity component directed toward a particle's personal or the global best position, injecting a controlled measure of unpredictability into each update.
@@ -233,7 +231,7 @@ It is important to distinguish these continuous reverse‐direction velocity sch
 \begin{equation}
     x_{i}^{*} = x_{\min} + x_{\max} - x_i,
 \end{equation}
-where $x_{\min}$ and $x_{\max}$ are the problem’s lower and upper bounds, respectively. If $f(x_{i}^{*})$ proves better than $f(x_i)$, the particle’s position is replaced by $x_{i}^{*}$. This approach increases the chance of sampling promising regions and can produce sudden ``revolutionary jumps'' out of local optima. However, unlike reverse-velocity modifications, which incrementally adjust each particle’s trajectory at every iteration, Op\-po\-si\-tion\-\mbox{-Based} Learning operates as a discrete position replacement. As a result, opposing-best learning strategies continuously influence the swarm's dynamics through the reverse\--di\-rec\-tion velocity update, whereas Opposition‐Based Learning only swaps in an opposite point when it demonstrates superior fitness.
+where $x_{\min}$ and $x_{\max}$ are the problem’s lower and upper bounds, respectively. If $f(x_{i}^{*})$ proves better than $f(x_i)$, the particle’s position is replaced by $x_{i}^{*}$. This approach increases the chance of sampling promising regions and can produce sudden ``revolutionary jumps'' out of local minima. However, unlike reverse-velocity modifications, which incrementally adjust each particle’s trajectory at every iteration, Op\-po\-si\-tion\-\mbox{-Based} Learning operates as a discrete position replacement. As a result, opposing-best learning strategies continuously influence the swarm's dynamics through the reverse\--di\-rec\-tion velocity update, whereas Opposition‐Based Learning only swaps in an opposite point when it demonstrates superior fitness.
 
 
 
@@ -357,7 +355,7 @@ The significance of $\rho_3$ lies in its direct control over the balance between
 \enlargethispage{-.3\baselineskip}
 The parameter $c_3$ is introduced as an acceleration coefficient specifically associated with the rebel particles' interaction with the global best position $b_g$. For standard particles, $c_2$ typically scales the influence of the global best position, drawing particles towards it. In RebelPSO, for rebel particles, this social component is explicitly reversed. Therefore, $c_3$ likely governs the magnitude of this repulsive force away from $b_g$.
 
-The role of $c_3$ is to control the ``strength of rebellion.'' A higher $c_3$ value means that rebel particles are pushed more aggressively away from the global best, leading to a more forceful exploration of distant regions. This can be beneficial in highly multimodal landscapes where strong repulsion might be necessary to escape deep local optima. Conversely, a lower $c_3$ would result in a weaker repulsive force, allowing rebel particles to stay relatively closer to the main swarm's search area, potentially leading to a more localized exploration around the global best.
+The role of $c_3$ is to control the ``strength of rebellion.'' A higher $c_3$ value means that rebel particles are pushed more aggressively away from the global best, leading to a more forceful exploration of distant regions. This can be beneficial in highly multimodal landscapes where strong repulsion might be necessary to escape deep local minima. Conversely, a lower $c_3$ would result in a weaker repulsive force, allowing rebel particles to stay relatively closer to the main swarm's search area, potentially leading to a more localized exploration around the global best.
 
 In essence, RebelPSO is a straightforward yet effective modification to the standard PSO, leveraging the principle of opposition or repulsion within a subset of the population to enhance exploration while maintaining the simplicity of a single, shared global best reference. By selectively applying this repulsive force to only a fraction of the swarm, RebelPSO maintains exploration in new regions without sacrificing the convergence behavior of the rest of the particles.
 
@@ -376,7 +374,7 @@ v_{i}^{j}{}'= \omega v_{i}^{j} +
 \underbrace{c_4 r_4 (x_{i}^{j} - b_{i}^{j})}_{\mathclap{\text{rejector component}}} +\ 
 c_2 r_2 (b_{g}^{j} - x_{i}^{j}),
 \end{equation}
-where rejector component $c_4 r_4 (x_{i}^{j} - b_{i}^{j})$ is the core innovation. In standard PSO, the cognitive component \eqref{eq:std_cog_component} is typically pulling the particle towards its personal best. By reversing this term to $(x_{i}^{j} - b_{i}^{j})$ and introducing a new acceleration coefficient $c_4$, the rejector particle is actively pushed away from its own best $b_i$. The term $r_4$ stands for the random number uniformly draw from a [0,1] range, as usual. This deliberate repulsion from past successes is crucial for preventing the particle from becoming trapped in a local optimum that it previously found.
+where rejector component $c_4 r_4 (x_{i}^{j} - b_{i}^{j})$ is the core innovation. In standard PSO, the cognitive component \eqref{eq:std_cog_component} is typically pulling the particle towards its personal best. By reversing this term to $(x_{i}^{j} - b_{i}^{j})$ and introducing a new acceleration coefficient $c_4$, the rejector particle is actively pushed away from its own best $b_i$. The term $r_4$ stands for the random number uniformly draw from a [0,1] range, as usual. This deliberate repulsion from past successes is crucial for preventing the particle from becoming trapped in a local minimum that it previously found.
 
 \begin{figure}[H]
     \centering
@@ -440,7 +438,7 @@ where rejector component $c_4 r_4 (x_{i}^{j} - b_{i}^{j})$ is the core innovatio
 \end{figure}
 
 Aside from tagging 
-a fixed porton of particles as rejectors and applying equation \eqref{eq:velocity_update_rejector} for those particles during velocity update phase, all other aspects of PSO---best position update \eqref{eq:position_update}, personal-best and global-best maintenance \eqref{eq:pbest_update} and \eqref{eq:gbest_update}, boundary handling, and termination criteria---remain identical to canonical algorithm. The global best 
+a fixed portion of particles as rejectors and applying equation \eqref{eq:velocity_update_rejector} for those particles during velocity update phase, all other aspects of PSO---best position update \eqref{eq:position_update}, personal-best and global-best maintenance \eqref{eq:pbest_update} and \eqref{eq:gbest_update}, boundary handling, and termination criteria---remain identical to canonical algorithm. The global best 
 $b_g$ continues to serve as a single, shared reference: both standard and rejector particles use it in their velocity calculations and contribute to its update when they discover improved solutions. 
 
 \vspace{.935em}
@@ -460,7 +458,7 @@ Set global best position \(\vec{b}_g\), for each particle set personal best posi
 \end{algorithm}
 \vspace{.935em}
 
-RejectorPSO introduces two dedicated parameters, $c_4$ and $\rho_4$. The parameter $c_4$ is an acceleration coefficient that scales the "rejector component" in \eqref{eq:velocity_update_rejector}. This component actively pushes the particle away from its own personal best position $b_i$ in order to explore regions that are away from rejectors' own past successes.
+RejectorPSO introduces two dedicated parameters, $c_4$ and $\rho_4$. The parameter $c_4$ is an acceleration coefficient that scales the "rejector component" in \eqref{eq:velocity_update_rejector}. This component actively pushes the particle away from its own personal best position $\vec{b}_i$ in order to explore regions that are away from rejectors' own past successes.
 % The magnitude of this repulsive force is scaled $c_4$.
 A larger value encourages more aggressive exploration and a greater tendency for the rejector particle to move into new regions of the \gls{search-space}. Smaller $c_4$ values result in a weaker repulsive force, having the effect similar to low $c_1$ values in canonical PSO---in the extreme case RejectorPSO would degenerate to a social\-\mbox{-only} update where particles ignore their personal best entirely (see \autoref{subsubsec:param_select}).
 
@@ -496,7 +494,7 @@ In the presented implementation, the rebel and rejector groups are chosen to be 
 $\rho_{3}$ and $\rho_{4}$
   must satisfy
 $\rho_{3} \cdot N + \rho_{4} \cdot N \;\le\; N$
-However, in general this disjoint-subsets requirement does not necessarily have to be the case. one could, for example, allow particles to exhibit both rebel and rejector behaviors simultaneously or to switch roles dynamically during the search (see \autoref{sec:hybrid}). Apart from the necessity of respecting the above constraint on subset sizes, all other parameter effects considerations discussed for the individual RebelPSO and RejectorPSO implementations apply equally to RebelRejectorPSO.
+However, in general this disjoint-subsets requirement does not necessarily have to be the case. One could, for example, allow particles to exhibit both rebel and rejector behaviors simultaneously or to switch roles dynamically during the search (see \autoref{sec:hybrid}). Apart from the necessity of respecting the above constraint on subset sizes, all other parameter effects considerations discussed for the individual RebelPSO and RejectorPSO implementations apply equally to RebelRejectorPSO.
 
 
 
@@ -506,7 +504,7 @@ However, in general this disjoint-subsets requirement does not necessarily have 
 
 \section{Attraction to the Worst (Negative Learning) Strategies}\label{sec:negative}
 
-In the standard PSO, particles adjust their trajectories by balancing attraction toward two key landmarks: their own best-known position (personal best, $b_i$) and the best position found by the entire swarm (global best, $b_g$). Nevertheless, there are some PSO extensions, that introduce alternative landmarks or attractors that modify particle movement.
+In the standard PSO, particles adjust their trajectories by balancing attraction toward two key landmarks: their own best-known position (personal best, $\vec{b}_i$) and the best position found by the entire swarm (global best, $\vec{b}_g$). Nevertheless, there are some PSO extensions, that introduce alternative landmarks or attractors that modify particle movement.
 Continuing the idea that opposing best positions can inject diversity infused with information about the problem structure, we now introduce the complementary concept that particles can learn not only from the best solutions but also from the worst ones they have encountered. In consequence, this family of strategies extends the swarm's repertoire by explicitly introducing personal worst and global worst positions as new points of attraction.
 In these variants, dedicated subswarms (or rather roles within the swarm) exploit these inferior solutions as guidance cues, entirely replacing the cognitive and social terms in the velocity update.
 By purposefully attracting some particles toward regions associated with poorer fitness, the algorithm injects more targeted diversity into the swarm dynamics---all with the unchanged guiding purpose: to avoid premature stagnation.
@@ -523,7 +521,7 @@ For example, in predator-prey PSO \citep{silva2002empirical}, the update equatio
 Although attraction to worst solutions is seemingly counter-intuitive and paradoxical, it is sometimes employed in some variants of reverse-learning algorithms when the swarm's optimization information stagnates, aiming explicitly to ``compel particles to leap out'' of local minima and promote population diversity.  While reverse learning more commonly refers to strategies that avoid or oppose the worst solutions (see \autoref{sec:reverse-learning} below), some variants labeled as reverse-learning methods explicitly adopt attraction to inferior positions as a deliberate mechanism.
 For instance, Reverse-Learning Particle Swarm Optimization (RLPSO)  by \citet{xia2014reverselearning} incorporates a "reverse-learning" behavior where certain inferior particles or the historical worst position of a particle can act as attractors. Specifically, during the reverse-learning process, an inferior position in the initial population and the historical inferior position of individual particles are utilized as new exemplars to guide particle trajectories. The motivation is that even inferior particles may contain useful information across some dimensions of the solution vector, and their distance from suboptimal points can be leveraged for broader exploration.
 
-Expanding upon this idea, \citet{dong2018reverselearning} introduced Reverse-Learning based on Niching Technology (NRPSO) that refines attraction to inferior positions within a niching framework. In this variant, particles are attracted to niches with low average fitness when the swarm is trapped in a local optimum. Niches are identified using fuzzy clustering, and a simulated annealing method is employed within each niche to exploit promising regions locally. The reverse-learning mechanism dynamically adjusts these inferior landmarks throughout the search, enhancing the algorithm’s capability to handle multi-modal and high-dimensional problems by fostering exploration across niche territories. It is worth noting, that in both of these reverse-learning variants, the attraction to the worst positions is typically activated under specific conditions, often when the swarm shows signs of stagnation or premature convergence to a local optimum. 
+Expanding upon this idea, \citet{dong2018reverselearning} introduced Reverse-Learning based on Niching Technology (NRPSO) that refines attraction to inferior positions within a niching framework. In this variant, particles are attracted to niches with low average fitness when the swarm is trapped in a local minimum. Niches are identified using fuzzy clustering, and a simulated annealing method is employed within each niche to exploit promising regions locally. The reverse-learning mechanism dynamically adjusts these inferior landmarks throughout the search, enhancing the algorithm’s capability to handle multi-modal and high-dimensional problems by fostering exploration across niche territories. It is worth noting, that in both of these reverse-learning variants, the attraction to the worst positions is typically activated under specific conditions, often when the swarm shows signs of stagnation or premature convergence to a local minimum. 
 
 \enlargethispage{.1\baselineskip}
 It should be noted that the characteristic mapping of negative learning strategies must be redefined in comparison to the standard PSO formulation in \eqref{eq:pso}:
@@ -629,7 +627,7 @@ By introducing global worst position  $\vec{w}_g$, it is necessary to enable the
 \end{equation}
 The update mechanism mirrors that of the global best $\vec{b}_g$ in standard PSO \eqref{eq:gbest_update}, but identifies the position with the highest (i.e., worst) objective function value instead of the lowest. This ensures that $\vec{w}_g$ is maintained as a shared landmark across the entire population, just as $\vec{b}_g$ is updated by any individual (contrarian or not), and serves as a common point of attraction for standard particles.
 
-In the ContrarianPSO, the swarm additionally maintains and shares information about the global worst position, as characterized in \eqref{eq:negative_pso}. During the initialization phase, a fixed fraction of particles is designated as contrarians. These contrarian particles follow an alternative movement rule in the search space: their velocity update is governed by equation \eqref{eq:velocity_update_contrarian}. After each evaluation step, all particles—whether standard or contrarian—contribute to updating the global worst position if their current positions yield a worse (higher) objective function value than the previous $\vec{b}_g$. Nonetheless, all other aspects of the algorithm remain the same as in the standard PSO defined in \autoref{cp:pso}.
+In the ContrarianPSO, the swarm additionally maintains and shares information about the global worst position, as characterized in \eqref{eq:negative_pso}. During the initialization phase, a fixed fraction of particles is designated as contrarians. These contrarian particles follow an alternative movement rule in the \gls{search-space}: their velocity update is governed by equation \eqref{eq:velocity_update_contrarian}. After each evaluation step, all particles—whether standard or contrarian—contribute to updating the global worst position if their current positions yield a worse (higher) objective function value than the previous $\vec{b}_g$. Nonetheless, all other aspects of the algorithm remain the same as in the standard PSO defined in \autoref{cp:pso}.
 
 
 \begin{algorithm}[H]
@@ -751,7 +749,7 @@ All other particles in the swarm follow the standard PSO velocity update rule \e
     \label{fig:DefeatistPSO_geometric_illustration}
 \end{figure}
 
-By introducing a term involving $w_i$, it is necessary to ensure that each particle is capable of storing information about its historical worst position, in accordance with the extended particle definition \eqref{eq:particle_negative}. Additionally, at least the defeatist particles must be able to update this value analogously to how the personal best  $b_i$ is updated in the canonical PSO \eqref{eq:pbest_update}:
+By introducing a term involving $\vec{w}_i$, it is necessary to ensure that each particle is capable of storing information about its historical worst position, in accordance with the extended particle definition \eqref{eq:particle_negative}. Additionally, at least the defeatist particles must be able to update this value analogously to how the personal best  $b_i$ is updated in the canonical PSO \eqref{eq:pbest_update}:
 \begin{equation}
 \vec{w}_i' = 
     \begin{cases}
@@ -760,7 +758,7 @@ By introducing a term involving $w_i$, it is necessary to ensure that each parti
     \end{cases}
 \quad \label{eq:pworst_update_defeatist}
 \end{equation}
-Finally, the swarm's global worst $\vec{w}_g$ and global best $\vec{b}_g$ emain shared resources across the entire population and are updated collectively, preserving coherence among the swarm’s diversity landmarks.
+Finally, the swarm's global worst $\vec{w}_g$ and global best $\vec{b}_g$ remain shared resources across the entire population and are updated collectively, preserving coherence among the swarm’s diversity landmarks.
 
 
 In the DefeatistPSO, the particles additionally maintain information about their personal worst position, as characterized in \eqref{eq:particle_negative}. During the initialization phase, a fixed fraction of particles is designated as defeatists. These defeatist particles follow an alternative movement rule in the \gls{search-space}: their velocity update is governed by equation \eqref{eq:velocity_update_defeatist}. After each evaluation step, at least the defeatist particles update their personal worst position if their current position yields a worse (i.e., higher) objective function value than the previous $\vec{w}_i$. Each particle, regardless of its role, continues to use and update the global best position $\vec{b}_g$ in the standard manner. Aside from these modifications, all other aspects of the algorithm remain identical to the standard PSO.
@@ -789,9 +787,9 @@ The parameter $\rho_6$ determines the proportion of the swarm designated as defe
 
 \subsection{ContrarianDefeatistPSO}
 
-ContrarianDefeatistPSO represents a comprehensive extension of the negative learning family by unifying the core principles of ContrarianPSO and DefeatistPSO within a single algorithmic framework. Its primary objective is to maximize swarm diversity and enhance the swarm’s capacity to escape local optima by explicitly assigning two subgroups of particles: one subgroup (contrarians) is attracted toward the global worst position, while the other subgroup (defeatists) targets each particle’s own personal worst position.
+ContrarianDefeatistPSO represents a comprehensive extension of the negative learning family by unifying the core principles of ContrarianPSO and DefeatistPSO within a single algorithmic framework. Its primary objective is to maximize swarm diversity and enhance the swarm’s capacity to escape local minima by explicitly assigning two subgroups of particles: one subgroup (contrarians) is attracted toward the global worst position, while the other subgroup (defeatists) targets each particle’s own personal worst position.
 
-Operationally, the algorithm partitions the swarm into these two dedicated subgroups during the initialization phase. Contrarian particles replace the social component of the velocity update with an attraction toward the global worst position $\vec{w}_g$ aas defined by equation \eqref{eq:velocity_update_contrarian}, while defeatist particles replace the cognitive component with an attraction toward their own personal worst $\vec{w}_i$, according to equation \eqref{eq:velocity_update_defeatist}.
+Operationally, the algorithm partitions the swarm into these two dedicated subgroups during the initialization phase. Contrarian particles replace the social component of the velocity update with an attraction toward the global worst position $\vec{w}_g$ as defined by equation \eqref{eq:velocity_update_contrarian}, while defeatist particles replace the cognitive component with an attraction toward their own personal worst $\vec{w}_i$, according to equation \eqref{eq:velocity_update_defeatist}.
 The swarm maintains information about both the current global best and global worst positions, and each particle stores information about its historical inferior positions, consistent with the definitions \eqref{eq:negative_pso} and \eqref{eq:particle_negative}. All particles contribute to updating the global worst position according to \eqref{eq:gworst_update}, and at least the defeatist particles update their personal worst positions according to \eqref{eq:pworst_update_defeatist}.
 
 % \enlargethispage{1\baselineskip}
@@ -843,7 +841,7 @@ In any case, by introducing memory of both personal and collective worst positio
 In the previous section, the PSO was extended by enriching the swarm’s memory with information about particles' personal worst and global worst positions. Once these inferior solutions are tracked, it is natural to exploit them in a reverse fashion: not by attracting particles to these low-quality regions, but by deliberately steering them away from areas known to yield poor solutions.
 In the literature, this principle is commonly referred to as \textit{reverse learning}.  However, it is worth noting that this term may also stand for negative strategies based on attraction to worst solutions (see introductory remarks in \autoref{sec:negative} above)
 
-Reverse learning has been proposed to counteract the inherent limitations of traditional PSO and to strengthen its global search capability. Fundamentally, this strategy leverages knowledge about historically poor or non-improving solutions to guide particles away from undesirable regions of the search space, thereby increasing population diversity and helping the swarm escape local optima. This contrasts with conventional PSO, which typically ignores information from inferior positions once better alternatives are found.
+Reverse learning has been proposed to counteract the inherent limitations of traditional PSO and to strengthen its global search capability. Fundamentally, this strategy leverages knowledge about historically poor or non-improving solutions to guide particles away from undesirable regions of the \gls{search-space}, thereby increasing population diversity and helping the swarm escape local minima. This contrasts with conventional PSO, which typically ignores information from inferior positions once better alternatives are found.
 
 A notable example of this concept is the Reverse-Learning Particle Swarm Optimization (RLPSO) algorithm by \citet{xia2014reverselearning}. Unlike standard PSO, which relies solely on best exemplars, RLPSO introduces inferior particles from the initial population and each particle’s historical worst position as negative landmarks. The velocity update explicitly incorporates these inferior solutions in a reverse-learning sense: each particle is guided to move away from its own worst position and a randomly selected inferior peer. This mechanism effectively introduces a repulsive force that pushes the particle out of regions associated with poor past performance.
 
@@ -1255,7 +1253,7 @@ where $c_3$ - $c_8$ are respective acceleration coefficients that scales the for
 
 This consistent role--component mapping allows each particle’s velocity to be flexibly constructed as the sum of its selected cognitive and social terms, according to its assigned roles. For instance, standard PSO's velocity update equation \eqref{eq:velocity_update} can be equivalently reformulated in the terms of $\Phi$ as:
 \begin{equation}\label{eq:velocity_update_reformulated}
-    v_{i}^{j}{}' = \Phi(\texttt{std}_\text{cog}) +  \Phi(\texttt{std}_\text{soc}).
+    v_{i}^{j}{}' = \omega v_{i}^{j} + \Phi(\texttt{std}_\text{cog}) +  \Phi(\texttt{std}_\text{soc}).
 \end{equation}
 With this full mapping defined, a general rule can be stated: in all multi-hybrid variants, the velocity update for each particle can be expressed in the unified form:
 \begin{equation}\label{eq:velocity_update_universal}
@@ -1369,7 +1367,7 @@ HybridAdditivePSO represent the most general paradigm within the family of multi
 
 
 
-HybridAdditivePSO is then of a fully flexible hybrid, where role assignment is unconstrained, allowing any combination of diversity-enhancing actions to coexist within a single particle’s update dynamics. Instead of mutually exclusive roles, each behavioral component is modeled as a probabilistic switch that can be active or inactive for each particle in each iteration. This means that in HybridAdditivePSO, each particle activates an independent subset of special cognitive and social roles at each iteration, according to predefined probabilities. If no special roles are activated for a given component (cognitive or social) in a given iteration, the standard component is applied by default. Formally, the active role set for each particle at the iteration step is defined by:
+HybridAdditivePSO is then a fully flexible hybrid, where role assignment is unconstrained, allowing any combination of diversity-enhancing actions to coexist within a single particle’s update dynamics. Instead of mutually exclusive roles, each behavioral component is modeled as a probabilistic switch that can be active or inactive for each particle in each iteration. This means that in HybridAdditivePSO, each particle activates an independent subset of special cognitive and social roles at each iteration, according to predefined probabilities. If no special roles are activated for a given component (cognitive or social) in a given iteration, the standard component is applied by default. Formally, the active role set for each particle at the iteration step is defined by:
 \begin{equation}\label{eq:additive_roles}
 A_i = A_{\text{cog}} \cup A_{\text{soc}}, 
 \quad 
