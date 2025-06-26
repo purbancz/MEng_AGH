@@ -412,9 +412,9 @@ To ensure fair comparison, the termination criterion for all runs was consistent
 
 The final average performance of each algorithm, evaluated on each benchmark problem and for each tested dimensionality, is summarised in Table~\ref{tab:final_results}. The table reports the mean final fitness values along with the corresponding standard deviations. For each problem and dimensionality, the best-performing algorithm is indicated in boldface and highlighted with a light grey cell background.
 
-To assess the significance of performance differences observed among the tested algorithms a comprehensive statistical analysis was conducted. The Shapiro–Wilk test ($\alpha = 0.05$) was first applied to evaluate the normality assumption for each algorithm's results; the null hypothesis of normality was rejected for most cases in all tested variants. Consequently, the non-parametric Kruskal–Wallis test was employed, revealing statistically significant differences in the distributions of final fitness values across the algorithm configurations. To identify specific pairwise differences, Dunn’s post-hoc test with Benjamini-Hochberg correction \citep{haynes2013benjaminihochberg} was used to control the false discovery rate in multiple comparisons. This procedure identified 92 algorithm pairs for which the differences were not statistically significant ($p > 0.05$): 29 pairs for the 100-dimensional case, 33 pairs for 500 dimensions, and 30 pairs for 1000 dimensions.
+To assess the significance of performance differences observed among the tested algorithms a comprehensive statistical analysis was conducted. The Shapiro–Wilk test ($\alpha = 0.05$) was first applied to evaluate the normality assumption for each algorithm's results; the null hypothesis of normality was rejected for most cases in all tested variants. Consequently, the non-parametric Kruskal–Wallis test was employed, revealing statistically significant differences in the distributions of final fitness values across the PSO variants. To identify specific pairwise differences, Dunn’s post-hoc test with Benjamini-Hochberg correction \citep{haynes2013benjaminihochberg} was used to control the false discovery rate in multiple comparisons. This procedure identified 92 algorithm pairs for which the differences were not statistically significant ($p > 0.05$): 29 pairs for the 100-dimensional case, 33 pairs for 500 dimensions, and 30 pairs for 1000 dimensions.
 %
-Table~\ref{tab:dunnfail} lists 12 selected pairs involving the baseline algorithms (PSO and PerturbationPSO) that were not found to differ significantly from at least one of the best-performing configurations.
+Table~\ref{tab:dunnfail} lists 12 selected pairs involving the baseline algorithms (PSO or PerturbationPSO) that were not found to differ significantly from at least one of the best-performing algorithms.
 
 
 \begin{longtable}{llp{0.5\textwidth}r}
@@ -552,9 +552,11 @@ PerturbationPSO, designed as a simple exploration booster, generally exhibits po
 
 
 On the other hand, both HybridAdditivePSO and HybridPartialDisjointPSO appear in the worst-placement counts 15 and 14 times, respectively. This apparent contradiction shows that they may be often outperformed by an algorithm that is highly specialized for a given landscape. It does not necessarily imply poor absolute performance.
-While counts of best and worst placements provide useful frequency information, the average rank presented on Table~\ref{tab:algo-avg-rank} offers a more stable indicator of overall competitiveness across the full test suite. A lower rank denotes consistently high performance. HybridPartialDisjointPSO again emerges as the most robust, with the lowest overall average rank (9.35), remaining consistently strong across all dimensions.
-DefeatistPSO and ContrarianDefeatistPSO also exhibit excellent average ranks (9.63 and 9.67, respectively), performing comparably to or better than HybridFullDisjointPSO (10.19). This demonstrates the consistent effectiveness of strategies leveraging attraction to inferior solutions as a controlled means to escape local minima.
-HybridAdditivePSO maintains a solid average rank (12.96), though slightly higher than its partial disjoint counterpart, reflecting its occasionally higher outcome variance, as seen in some of the distribution plots. Standard PSO and PerturbationPSO show distinctly weaker competitiveness, with average ranks of, respectively, 16.01 and 17.61, proving relative weakness against the more sophisticated role-based and hybrid designs.
+% While counts of best and worst placements provide useful frequency information, the average rank presented on Table~\ref{tab:algo-avg-rank} offers a more stable indicator of overall competitiveness across the full test suite. A lower rank denotes consistently high performance. HybridPartialDisjointPSO again emerges as the most robust, with the lowest overall average rank (9.35), remaining consistently strong across all dimensions.
+% DefeatistPSO and ContrarianDefeatistPSO also exhibit excellent average ranks (9.63 and 9.67, respectively), performing comparably to or better than HybridFullDisjointPSO (10.19). This demonstrates the consistent effectiveness of strategies leveraging attraction to inferior solutions as a controlled means to escape local minima.
+% HybridAdditivePSO maintains a solid average rank (12.96), though slightly higher than its partial disjoint counterpart, reflecting its occasionally higher outcome variance, as seen in some of the distribution plots. Standard PSO and PerturbationPSO show distinctly weaker competitiveness, with average ranks of, respectively, 16.01 and 17.61, proving relative weakness against the more sophisticated role-based and hybrid designs.
+While counts of best and worst placements provide useful frequency information, the average rank presented in Table~\ref{tab:algo-avg-rank} offers a more robust indicator of overall competitiveness across the entire benchmark suite. A lower average rank indicates more consistent high performance across problems and dimensionalities. According to the updated values, ContrarianDefeatistPSO and DefeatistPSO now emerge as the top performers, with the lowest overall average ranks (5.33 and 5.34, respectively), marginally outperforming HybridPartialDisjointPSO (5.40) and HybridFullDisjointPSO (5.65). This demonstrates the consistent effectiveness of strategies based on attraction to inferior solutions as a controlled mechanism for avoiding local minima.
+HybridAdditivePSO maintains a solid average rank (7.17) but remains slightly higher than its partial disjoint counterpart, reflecting its somewhat higher outcome variance, as evidenced by the distribution plots. In contrast, standard PSO and PerturbationPSO rank notably lower in overall competitiveness (8.60 and 9.09, respectively), underscoring their relative weakness compared to the proposed role-based and hybrid designs.
 
 
 \begin{longtable}[c]{p{5cm}cccc}
@@ -583,20 +585,48 @@ HybridAdditivePSO maintains a solid average rank (12.96), though slightly higher
 \bottomrule
 \endlastfoot
 
-HybridPartialDisjointPSO & 9.90 & 9.14 & 9.02 & \textbf{9.35} \\
-DefeatistPSO            & 10.05 & 9.78 & 9.08 & \textbf{9.63} \\
-ContrarianDefeatistPSO  & 9.75 & 9.95 & 9.30 & \textbf{9.67} \\
-HybridFullDisjointPSO   & 10.95 & 10.06 & 9.56 & \textbf{10.19} \\
-HybridAdditivePSO       & 13.13 & 13.71 & 12.05 & \textbf{12.96} \\
-RebelPSO                & 13.63 & 14.03 & 14.62 & \textbf{14.10} \\
-RebelRejectorPSO        & 14.43 & 14.30 & 15.67 & \textbf{14.80} \\
-EschewerEscapistPSO     & 14.87 & 14.44 & 15.59 & \textbf{14.97} \\
-EschewerPSO             & 15.03 & 15.16 & 15.67 & \textbf{15.29} \\
-EscapistPSO             & 16.57 & 15.97 & 15.10 & \textbf{15.88} \\
-PSO                     & 17.06 & 16.05 & 14.90 & \textbf{16.01} \\
-RejectorPSO             & 15.19 & 16.52 & 16.89 & \textbf{16.20} \\
-PerturbationPSO         & 16.59 & 17.98 & 18.25 & \textbf{17.61} \\
-ContrarianPSO           & 17.46 & 17.52 & 19.00 & \textbf{17.99} \\
+% HybridPartialDisjointPSO & 9.90 & 9.14 & 9.02 & \textbf{9.35} \\
+% DefeatistPSO            & 10.05 & 9.78 & 9.08 & \textbf{9.63} \\
+% ContrarianDefeatistPSO  & 9.75 & 9.95 & 9.30 & \textbf{9.67} \\
+% HybridFullDisjointPSO   & 10.95 & 10.06 & 9.56 & \textbf{10.19} \\
+% HybridAdditivePSO       & 13.13 & 13.71 & 12.05 & \textbf{12.96} \\
+% RebelPSO                & 13.63 & 14.03 & 14.62 & \textbf{14.10} \\
+% RebelRejectorPSO        & 14.43 & 14.30 & 15.67 & \textbf{14.80} \\
+% EschewerEscapistPSO     & 14.87 & 14.44 & 15.59 & \textbf{14.97} \\
+% EschewerPSO             & 15.03 & 15.16 & 15.67 & \textbf{15.29} \\
+% EscapistPSO             & 16.57 & 15.97 & 15.10 & \textbf{15.88} \\
+% PSO                     & 17.06 & 16.05 & 14.90 & \textbf{16.01} \\
+% RejectorPSO             & 15.19 & 16.52 & 16.89 & \textbf{16.20} \\
+% PerturbationPSO         & 16.59 & 17.98 & 18.25 & \textbf{17.61} \\
+% ContrarianPSO           & 17.46 & 17.52 & 19.00 & \textbf{17.99} \\
+% ContrarianDefeatistPSO   & 5.37500 & 5.53125 & 5.09375 & \textbf{5.333333} \\
+% DefeatistPSO             & 5.62500 & 5.31250 & 5.09375 & \textbf{5.343750} \\
+% HybridPartialDisjointPSO & 5.68750 & 5.28125 & 5.21875 & \textbf{5.395833} \\
+% HybridFullDisjointPSO    & 6.12500 & 5.50000 & 5.31250 & \textbf{5.645833} \\
+% HybridAdditivePSO        & 7.25000 & 7.50000 & 6.75000 & \textbf{7.166667} \\
+% RebelPSO                 & 7.50000 & 7.62500 & 7.78125 & \textbf{7.635417} \\
+% RebelRejectorPSO         & 7.62500 & 7.62500 & 8.25000 & \textbf{7.833333} \\
+% EschewerEscapistPSO      & 7.90625 & 7.81250 & 8.34375 & \textbf{8.020833} \\
+% EschewerPSO              & 7.93750 & 8.12500 & 8.43750 & \textbf{8.166667} \\
+% EscapistPSO              & 8.78125 & 8.71875 & 8.21875 & \textbf{8.572917} \\
+% RejectorPSO              & 8.12500 & 8.68750 & 8.93750 & \textbf{8.583333} \\
+% PSO                      & 9.09375 & 8.62500 & 8.09375 & \textbf{8.604167} \\
+% PerturbationPSO          & 8.59375 & 9.28125 & 9.40625 & \textbf{9.093750} \\
+% ContrarianPSO            & 9.37500 & 9.37500 & 10.06250 & \textbf{9.604167} \\
+ContrarianDefeatistPSO   & 5.375 & 5.531 & 5.094 & \textbf{5.333} \\
+DefeatistPSO             & 5.625 & 5.313 & 5.094 & \textbf{5.344} \\
+HybridPartialDisjointPSO & 5.688 & 5.281 & 5.219 & \textbf{5.396} \\
+HybridFullDisjointPSO    & 6.125 & 5.500 & 5.313 & \textbf{5.646} \\
+HybridAdditivePSO        & 7.250 & 7.500 & 6.750 & \textbf{7.167} \\
+RebelPSO                 & 7.500 & 7.625 & 7.781 & \textbf{7.635} \\
+RebelRejectorPSO         & 7.625 & 7.625 & 8.250 & \textbf{7.833} \\
+EschewerEscapistPSO      & 7.906 & 7.813 & 8.344 & \textbf{8.021} \\
+EschewerPSO              & 7.938 & 8.125 & 8.438 & \textbf{8.167} \\
+EscapistPSO              & 8.781 & 8.719 & 8.219 & \textbf{8.573} \\
+RejectorPSO              & 8.125 & 8.688 & 8.938 & \textbf{8.583} \\
+PSO                      & 9.094 & 8.625 & 8.094 & \textbf{8.604} \\
+PerturbationPSO          & 8.594 & 9.281 & 9.406 & \textbf{9.094} \\
+ContrarianPSO            & 9.375 & 9.375 & 10.063 & \textbf{9.604} \\
 \end{longtable}
 
 Table~\ref{tab:algo-avg-norm} provides an additional layer of insight by presenting a min–max normalized performance score for each algorithm, which scales performance on each benchmark problem to the interval [0,1]. In this scheme, the best-performing algorithm for a given problem and dimensionality is assigned a score of 0, while the worst-performing algorithm is assigned a score of 1, and all others are scaled linearly between these extremes. This approach captures not only the ranking but also the magnitude of performance differences, offering a more nuanced comparison. Lower normalized values thus indicate better relative performance within the tested set.

@@ -17,7 +17,7 @@ Its main objective is twofold:
 \item To implement, hybridize, and empirically evaluate these strategies, demonstrating their effectiveness in overcoming the inherent limitations of standard PSO when applied to complex, high-dimensional benchmark problems.
 \end{enumerate}
 
-
+% The central hypothesis of this work is that incorporating strategically designed, informed hybrid diversity mechanisms into PSO will significantly improve its effectiveness compared to standard and perturbation-based reference algorithms.
 
 Unlike many earlier extensions that rely on uninformed randomness to scatter particles, the methods proposed in \autoref{cp:strategies} systematically exploit known positional landmarks within the swarm---specifically, the personal and global bests and worsts---combined with attraction and repulsion forces applied in both the cognitive and social components of the PSO's velocity update. Building on this idea, three fundamental behavioral categories are formulated: strategies that repel particles from the best-known positions (opposing-best or repulsion strategies), strategies that deliberately attract particles towards worst-known regions (attraction-to-worst or negative learning strategies), and strategies that repel particles from the worst positions (opposing-worst or reverse learning strategies). 
 This framework permits the construction of both: targeted single-role algorithms and more sophisticated multi-role hybrids. Three multi-hybrid paradigms are developed:
@@ -28,8 +28,15 @@ This framework permits the construction of both: targeted single-role algorithms
 \end{enumerate}
 These hybrids integrate the core behavioral strategies within a uniform algorithmic structure, where a defined fraction of the swarm adopts specific roles, modifying either the social or cognitive velocity term accordingly. This controlled experimental design enables a clear, fair comparison of various informed diversity techniques under consistent conditions.
 
+The central hypothesis of this work is that incorporating strategically designed, informed hybrid diversity mechanisms into PSO will significantly improve its effectiveness compared to standard and perturbation-based reference algorithms.
+This hypothesis rests on the assumption that 
+% strategically designed
+carefully crafted, seemingly counterintuitive roles can enhance PSO's exploration capacity  without compromising its ability to find near-optimal solutions.
+
+
+
 The proposed algorithms are empirically validated on an extensive suite of benchmark functions encompassing a variety of landscape complexities (separable, non-separable, rotated, shifted, unimodal, multimodal) and dimensionalities up to 1000 variables. Details of the experimental design, parameter tuning, and evaluation criteria are presented in \autoref{cp:experiment}.
-The results demonstrate that the multi-hybrid strategies consistently outperform standard PSO and simpler perturbation-based extensions, with single-role variants occasionally matching or exceeding the hybrids on certain landscapes with specific structural features.
+The results demonstrate that the multi-hybrid strategies consistently outperform standard PSO and---in most cases---simpler perturbation-based extensions, with single-role variants occasionally matching or exceeding the hybrids on certain landscapes with specific structural features.
 
 
 

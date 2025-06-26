@@ -1244,7 +1244,7 @@ c_8\, r_8\, (x_i - w_i)
     & \text{if } r = \texttt{escapist}.
 \end{cases}
 \end{equation}
-where $c_3$ - $c_8$ are respective acceleration coefficients that scales the force of attraction or repulsion in a respective component. $r_3$ - $r_8$ are independent random numbers drawn uniformly from [0,1]. $b_{g}$ and $w_{g}$ stand for global best and global worst position, respectively, while $b_{i}$ and $w_{i}$ are $i$-th particle personal best and worst position, respectively. This consistent role-component mapping allows each particle’s velocity to be flexibly constructed as a sum of its selected cognitive and social terms, according to its assigned roles. Finally, \(\Phi\) formally specifies the function that maps any role \( r \in R_\text{cog} \cup R_\text{soc} \) of the \( i \)-th particle to its corresponding  velocity update component.
+where $c_1$ - $c_8$ are respective acceleration coefficients that scales the force of attraction or repulsion in a respective component. $r_1$ - $r_8$ are independent random numbers drawn uniformly from [0,1]. $b_{g}$ and $w_{g}$ stand for global best and global worst position, respectively, while $b_{i}$ and $w_{i}$ are $i$-th particle personal best and worst position, respectively. This consistent role-component mapping allows each particle’s velocity to be flexibly constructed as a sum of its selected cognitive and social terms, according to its assigned roles. Finally, \(\Phi\) formally specifies the function that maps any role \( r \in R_\text{cog} \cup R_\text{soc} \) of the \( i \)-th particle to its corresponding  velocity update component.
 
 
 
@@ -1274,14 +1274,10 @@ There is one major difference between the multi-hybrid approach described in thi
 
 
 HybridFullDisjointPSO is one of the paradigms within the family of multi-hybrid strategies for diversity enhancement in PSO.
-This variant represents the class of disjoint-role hybrids, in which different specialized behaviors (e.g., contrarian, defeatist, eschewer, escapist) are assigned to disjoint subgroups of particles. Each particle may have at most one special role or remain entirely standard. This strictly disjoint role assignment scheme ensures that each particle expresses at most one special behavior at a time, thereby simplifying interpretability and avoiding overly complex interactions. Specifically, each particle is categorized as one of the following: standard (standard cognitive and standard social behavior),  special cognitive (one special cognitive role paired with standard social behavior), special social (one special social role paired with standard cognitive behavior).
+This variant represents the class of disjoint-role hybrids, in which different specialized behaviors (e.g., contrarian, defeatist, eschewer, escapist) are assigned to disjoint subgroups of particles. Each particle may have at most one special role or remain entirely standard. This strictly disjoint role assignment scheme ensures that each particle expresses at most one special behavior at a time, thereby simplifying interpretability and avoiding overly complex interactions. Specifically, each particle is categorized as one of the following: standard (standard cognitive and standard social behavior),  special cognitive (a single special cognitive role paired with standard social behavior), special social (a single special social role paired with standard cognitive behavior).
 
 
-% HybridFullDisjointPSO is one of the paradigm within multi-hybrid strategies of diversity-enhancing for PSO.
-% Disjoint-role hybrids (HybridFullDisjointPSO), where different roles (e.g., contrarian, defeatist, eschewer, escapist) are assigned to disjoint subgroups of particles. Each particle can have a single role, either special or standard
-% HybridFullDisjointPSO uses a strictly disjoint role assignment scheme to ensure that each particle has at most one special behavior, simplifying interpretability and avoiding overcomplicated interactions. Specifically, each particle is categorized as: standard (standard cognitive and standard social behavior),  special cognitive (one special cognitive role paired with standard social behavior), special social (one special social role paired with standard cognitive behavior)
-
-For the full-disjoint case, $A_i$  must be the union of exactly one cognitive role and one social role, constrained to valid pairings by the domain
+For the full-disjoint case, $A_i$  must include exactly one cognitive and one social role, with valid pairings restricted so that only one of them can be special at a time.
 \begin{equation}\label{eq:fulldisjoint_roles}
     A_i = \{ r_\text{cog},\; r_\text{soc} \}\text{ where }(r_\text{cog}, r_\text{soc}) \in (R_\text{cog} \times \{\texttt{std}_\text{soc}\}) \cup (\{\texttt{std}_\text{cog}\} \times R_\text{soc}) 
 \end{equation}
@@ -1429,7 +1425,7 @@ Role activations are re-sampled for each particle at every iteration, producing 
 
 \vspace{.935em}
 \begin{algorithm}[H]
-\caption{HybridPartialDisjointPSO}\label{alg:hybridadditive}
+\caption{HybridAdditivePSO}\label{alg:hybridadditive}
 \KwIn{
 Swarm size \(N\); inertia weight \(\omega\), acceleration coefficients $c_1$, $c_2$, $c_3$, $c_4$, $c_5$, $c_6$, $c_7$, $c_8$,  role fractions: \(\rho_1, \rho_2, \rho_3, \rho_4, \rho_5, \rho_6, \rho_7, \rho_8\)
 }
