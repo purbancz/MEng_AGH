@@ -143,6 +143,7 @@
     \ifthenelse{\equal{\MediaOption}{paper}}{\blankpage}{\clearpage}%
 }
 
+
 % Update various elements based on the '\MediaOption' value.
 \apptocmd{\tableofcontents}{\MediaOptionLogic}{}{\fail}
 \apptocmd{\listoffigures}{\MediaOptionLogic}{}{\fail}
